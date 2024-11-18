@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Microsoft.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace HonorsThesisApp
 {
@@ -17,11 +19,14 @@ namespace HonorsThesisApp
         public Form2()
         {
             InitializeComponent();
+            //LoadCategory_CBData();
+            //LoadBrand_CBData();
+            //LoadItem_CBData();
         }
 
         private void button_AddItem_Click(object sender, EventArgs e)
         {
-         //   addItem();
+            //   addItem();
         }
 
         private void addItem()
@@ -70,6 +75,124 @@ namespace HonorsThesisApp
                     MessageBox.Show("ERROR:" + ex.Message);
                 }
             }
+        }
+
+        private void LoadCategory_CBData()
+        {
+            // Connection string (update with actual database details)
+            string connString = "Data Source=UMAIR;Initial Catalog=Air;Trusted_Connection=True;";
+
+            string query = "SELECT CategoryName FROM Categories";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                catagorySelector.Items.Add(reader[0].ToString());
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+            }
+
+        }
+
+        private void LoadBrand_CBData()
+        {
+            // Connection string (update with actual database details)
+            string connString = "Data Source=UMAIR;Initial Catalog=Air;Trusted_Connection=True;";
+
+            string query = "SELECT BrandName FROM Brand";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                catagorySelector.Items.Add(reader[0].ToString());
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+
+
+            }
+        }
+
+        private void LoadItem_CBData()
+        {
+            // Connection string (update with actual database details)
+            string connString = "Data Source=UMAIR;Initial Catalog=Air;Trusted_Connection=True;";
+
+            string query = "SELECT ItemName FROM Item";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                catagorySelector.Items.Add(reader[0].ToString());
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+
+            }
+        }
+
+
+
+
+        private void catagorySelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_addNewBrand_Click(object sender, EventArgs e)
+        {
+            TB_NewBrandName.Visible = true;
+        }
+
+        private void button_addNewItemName_Click(object sender, EventArgs e)
+        {
+            TB_NewItemName.Visible = true;
         }
     }
 }
