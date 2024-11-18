@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace HonorsThesisApp
@@ -31,6 +32,18 @@ namespace HonorsThesisApp
 
         private void addItem()
         {
+            // check if user added a new item name or brand name:
+            if (!TB_NewBrandName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Brand")
+            {
+                addNewBrandName();
+            }
+
+            if (!TB_NewItemName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Item")
+            {
+                addNewItemName();
+            }
+
+
             // replace with correct connection string
             String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
 
@@ -76,6 +89,84 @@ namespace HonorsThesisApp
                 }
             }
         }
+        
+        private void addNewBrandName()
+        {
+            // replace with correct connection string
+            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+
+            // replace with actual sql statement using correct parameters
+            String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
+
+            // Create the connection (and be sure to dispose it at the end)
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        // Create and set the parameters values 
+                        cmd.Parameters.AddWithValue("@brandName", TB_NewBrandName.Text);
+
+                        // Let's ask the db to execute the query
+                        int rowsAdded = cmd.ExecuteNonQuery();
+                        if (rowsAdded > 0)
+                            MessageBox.Show("Successfully added new brand name!");
+                        else
+                            // Well this should never really happen
+                            MessageBox.Show("Error: Could not add new brand name");
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR:" + ex.Message);
+                }
+            }
+        }
+
+        private void addNewItemName()
+        {
+            // replace with correct connection string
+            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+
+            // replace with actual sql statement using correct parameters
+            String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
+
+            // Create the connection (and be sure to dispose it at the end)
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        // Create and set the parameters values 
+                        cmd.Parameters.AddWithValue("@itemName", TB_NewItemName.Text);
+
+                        // Let's ask the db to execute the query
+                        int rowsAdded = cmd.ExecuteNonQuery();
+                        if (rowsAdded > 0)
+                            MessageBox.Show("Successfully added new item name!");
+                        else
+                            // Well this should never really happen
+                            MessageBox.Show("Error: Could not add new item name");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("ERROR:" + ex.Message);
+                }
+            }
+        }
+
+
+
 
         private void LoadCategory_CBData()
         {
