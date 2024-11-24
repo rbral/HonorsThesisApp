@@ -1,4 +1,7 @@
 using System;
+using System.Configuration;
+using System.Configuration.Provider;
+using System.Data;
 using Microsoft.Data.SqlClient;
 
 
@@ -7,11 +10,17 @@ namespace HonorsThesisApp
 {
     public partial class Form1 : Form
     {
+        private static String strServer = ConfigurationManager.AppSettings["server"];
+        private static String strDatabase = ConfigurationManager.AppSettings["database"];
+        //private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
+
+       private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form1()
         {
             InitializeComponent();
             dateTimePicker1.Value = DateTime.Now;
-            //LoadItemNames();
+             LoadItemNames();
+            //savePageInformation();
         }
 
         private void L_Receipt_Title_Click(object sender, EventArgs e)
@@ -21,7 +30,7 @@ namespace HonorsThesisApp
 
         private void button_Next_Click(object sender, EventArgs e)
         {
-          //  savePageInformation();
+            savePageInformation();
             Form2 newForm = new Form2(); // Create an instance of the new form
             newForm.Show();              // Show the new form
             this.Hide();                 // Optionally hide the current form
@@ -30,13 +39,11 @@ namespace HonorsThesisApp
         private void savePageInformation()
         {     
             // replace with correct connection string
-            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
-
-            // replace with actual sql statement using correct parameters
-            String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
+           // replace with actual sql statement using correct parameters
+            String sql = "INSERT INTO STORES VALUES @store, @straddress, @city, @state, @zip, US";
 
             // Create the connection (and be sure to dispose it at the end)
-            using (SqlConnection cnn = new SqlConnection(connectionString))
+            using (SqlConnection cnn = new SqlConnection(connString))
             {
 
                 try
@@ -79,25 +86,25 @@ namespace HonorsThesisApp
 
     
 
-        /*private void LoadItemNames()
+        private void LoadItemNames()
         {
-            //TODO: replace with actual server and database names and query
-            var server = "RIVKALAPTOP\\SQLEXPRESS01";
-            var database = "Store"; 
-            String strConnect = $"Server={server};Database={database};Trusted_Connection=True;";
-            String query = "SELECT BrandName FROM Brand"; 
+          String query = "SELECT brand_name FROM Brand"; 
             SqlConnection sqlCon;
             try
             {
-                sqlCon = new SqlConnection(strConnect);
+               sqlCon = new SqlConnection(connString);
                 sqlCon.Open();
                 SqlCommand command = new SqlCommand(query, sqlCon);
                 SqlDataReader reader = command.ExecuteReader();
 
                 // Populate ComboBox with data from the database
+                List<String> brandList = new List<String>();
                 while (reader.Read())
                 {
-                    comboBox_Brand.Items.Add(reader["BrandName"].ToString());
+                    //  comboBox_Brand.Items.Add(reader["BrandName"].ToString());
+                    //  brandList.Add(reader.GetString(1));
+                    //  Console.WriteLine(reader["brand_name"].ToString());
+                    brandList.Add(reader["brand_name"].ToString());
                 }
 
                 reader.Close();
@@ -107,6 +114,6 @@ namespace HonorsThesisApp
                 MessageBox.Show(ex.Message);
             }
 
-        }*/
+        }
     }
 }
