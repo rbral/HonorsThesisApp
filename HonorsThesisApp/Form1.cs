@@ -30,17 +30,16 @@ namespace HonorsThesisApp
 
         private void button_Next_Click(object sender, EventArgs e)
         {
-            savePageInformation();
+            addStore();
             Form2 newForm = new Form2(); // Create an instance of the new form
             newForm.Show();              // Show the new form
             this.Hide();                 // Optionally hide the current form
         }
 
-        private void savePageInformation()
-        {     
-            // replace with correct connection string
-           // replace with actual sql statement using correct parameters
-            String sql = "INSERT INTO STORES VALUES @store, @straddress, @city, @state, @zip, US";
+        private void addStore()
+        {
+            string sql = "INSERT INTO Stores (store_name, staddress, city, state, postal_code, country) " +
+             "VALUES (@store, @staddress, @city, @state, @zip, 'USA')";
 
             // Create the connection (and be sure to dispose it at the end)
             using (SqlConnection cnn = new SqlConnection(connString))

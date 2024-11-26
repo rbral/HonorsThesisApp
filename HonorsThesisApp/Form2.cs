@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Configuration;
+using System.Configuration.Provider;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -17,11 +11,17 @@ namespace HonorsThesisApp
 {
     public partial class Form2 : Form
     {
+        private static String strServer = ConfigurationManager.AppSettings["server"];
+        private static String strDatabase = ConfigurationManager.AppSettings["database"];
+        //private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
+
+        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+
         public Form2()
         {
             InitializeComponent();
-            //LoadCategory_CBData();
-            //LoadBrand_CBData();
+            LoadCategory_CBData();
+            LoadBrand_CBData();
             //LoadItem_CBData();
         }
 
@@ -89,7 +89,7 @@ namespace HonorsThesisApp
                 }
             }
         }
-        
+
         private void addNewBrandName()
         {
             // replace with correct connection string
@@ -165,76 +165,6 @@ namespace HonorsThesisApp
             }
         }
 
-
-
-
-        private void LoadCategory_CBData()
-        {
-            // Connection string (update with actual database details)
-            string connString = "Data Source=UMAIR;Initial Catalog=Air;Trusted_Connection=True;";
-
-            string query = "SELECT CategoryName FROM Categories";
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                try
-                {
-                    conn.Open();
-
-                    using (SqlCommand command = new SqlCommand(query, conn))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                catagorySelector.Items.Add(reader[0].ToString());
-                            }
-                        }
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading data: {ex.Message}");
-                }
-            }
-
-        }
-
-        private void LoadBrand_CBData()
-        {
-            // Connection string (update with actual database details)
-            string connString = "Data Source=UMAIR;Initial Catalog=Air;Trusted_Connection=True;";
-
-            string query = "SELECT BrandName FROM Brand";
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                try
-                {
-                    conn.Open();
-
-                    using (SqlCommand command = new SqlCommand(query, conn))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                catagorySelector.Items.Add(reader[0].ToString());
-                            }
-                        }
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading data: {ex.Message}");
-                }
-
-
-            }
-        }
-
         private void LoadItem_CBData()
         {
             // Connection string (update with actual database details)
@@ -273,9 +203,37 @@ namespace HonorsThesisApp
 
         private void catagorySelector_SelectedIndexChanged(object sender, EventArgs e)
         {
+            LoadCategory_CBData();
+        }
+        private void LoadCategory_CBData()
+        {
+            string query = "SELECT category_name FROM Categories";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                catagorySelector.Items.Add(reader[0].ToString());
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+            }
 
         }
-
         private void button_addNewBrand_Click(object sender, EventArgs e)
         {
             TB_NewBrandName.Visible = true;
@@ -284,6 +242,42 @@ namespace HonorsThesisApp
         private void button_addNewItemName_Click(object sender, EventArgs e)
         {
             TB_NewItemName.Visible = true;
+        }
+
+        private void brandSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadBrand_CBData();
+        }
+
+        private void LoadBrand_CBData()
+        {
+            string query = "SELECT brand_name FROM Brand";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                catagorySelector.Items.Add(reader[0].ToString());
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+
+
+            }
         }
     }
 }
