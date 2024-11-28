@@ -5,6 +5,7 @@ using System.Data;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace HonorsThesisApp
@@ -14,6 +15,7 @@ namespace HonorsThesisApp
         private static String strServer = ConfigurationManager.AppSettings["server"];
         private static String strDatabase = ConfigurationManager.AppSettings["database"];
         //private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
+        private String currBrand = "";
 
         private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
 
@@ -22,7 +24,7 @@ namespace HonorsThesisApp
             InitializeComponent();
             LoadCategory_CBData();
             LoadBrand_CBData();
-            //LoadItem_CBData();
+            LoadItem_CBData();
         }
 
         private void button_AddItem_Click(object sender, EventArgs e)
@@ -47,9 +49,7 @@ namespace HonorsThesisApp
             // replace with correct connection string
             String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
 
-            // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
-
             // Create the connection (and be sure to dispose it at the end)
             using (SqlConnection cnn = new SqlConnection(connectionString))
             {
@@ -167,10 +167,9 @@ namespace HonorsThesisApp
 
         private void LoadItem_CBData()
         {
-            // Connection string (update with actual database details)
-            string connString = "Data Source=UMAIR;Initial Catalog=Air;Trusted_Connection=True;";
+            //  string query = "SELECT product_name FROM Products";
 
-            string query = "SELECT ItemName FROM Item";
+            string query = "SELECT product_name FROM Products p JOIN Brand b ON p.brand_id = b.brand_id WHERE brand_name = @currBrand";
 
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -180,11 +179,17 @@ namespace HonorsThesisApp
 
                     using (SqlCommand command = new SqlCommand(query, conn))
                     {
+                        String selectedBrand = "";
+                        if (brandSelector.SelectedItem != null)
+                        {
+                            selectedBrand = brandSelector.SelectedItem.ToString();
+                        }
+                        command.Parameters.AddWithValue("@currBrand", selectedBrand);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                catagorySelector.Items.Add(reader[0].ToString());
+                                TB_Item.Items.Add(reader[0].ToString());
                             }
                         }
 
@@ -246,7 +251,8 @@ namespace HonorsThesisApp
 
         private void brandSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            LoadBrand_CBData();
+            //   LoadBrand_CBData();
+            LoadItem_CBData();
         }
 
         private void LoadBrand_CBData()
@@ -265,7 +271,8 @@ namespace HonorsThesisApp
                         {
                             while (reader.Read())
                             {
-                                catagorySelector.Items.Add(reader[0].ToString());
+                                brandSelector.Items.Add(reader[0].ToString());
+                                //   brandSelector.SelectedItem = reader[0].ToString();
                             }
                         }
 
@@ -275,6 +282,9 @@ namespace HonorsThesisApp
                 {
                     MessageBox.Show($"Error loading data: {ex.Message}");
                 }
+
+
+
 
 
             }
