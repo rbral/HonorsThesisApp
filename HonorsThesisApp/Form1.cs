@@ -14,12 +14,12 @@ namespace HonorsThesisApp
         private static String strDatabase = ConfigurationManager.AppSettings["database"];
         //private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
 
-       private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form1()
         {
             InitializeComponent();
             dateTimePicker1.Value = DateTime.Now;
-             LoadItemNames();
+            LoadItemNames();
             //savePageInformation();
         }
 
@@ -80,18 +80,18 @@ namespace HonorsThesisApp
                     // for this example let's just show a message
                     MessageBox.Show("ERROR:" + ex.Message);
                 }
-            } 
+            }
         }
 
-    
+
 
         private void LoadItemNames()
         {
-          String query = "SELECT brand_name FROM Brand"; 
+            String query = "SELECT brand_name FROM Brand";
             SqlConnection sqlCon;
             try
             {
-               sqlCon = new SqlConnection(connString);
+                sqlCon = new SqlConnection(connString);
                 sqlCon.Open();
                 SqlCommand command = new SqlCommand(query, sqlCon);
                 SqlDataReader reader = command.ExecuteReader();

@@ -17,7 +17,7 @@ namespace HonorsThesisApp
         //private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
         private String currBrand = "";
 
-        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
 
         public Form2()
         {
@@ -47,7 +47,7 @@ namespace HonorsThesisApp
 
 
             // replace with correct connection string
-            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
 
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
             // Create the connection (and be sure to dispose it at the end)
@@ -88,12 +88,18 @@ namespace HonorsThesisApp
                     MessageBox.Show("ERROR:" + ex.Message);
                 }
             }
+
+            // then clear all fields so user can enter a new item if they want:
+            TB_Barcode.Clear();
+            TB_NewBrandName.Text = "Enter New Brand";
+            TB_NewItemName.Text = "Enter New Item";
+            TB_Price.Clear();
         }
 
         private void addNewBrandName()
         {
             // replace with correct connection string
-            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
 
             // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
@@ -131,7 +137,7 @@ namespace HonorsThesisApp
         private void addNewItemName()
         {
             // replace with correct connection string
-            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
 
             // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
@@ -288,6 +294,13 @@ namespace HonorsThesisApp
 
 
             }
+        }
+
+        private void button_Submit_Click(object sender, EventArgs e)
+        {
+            // exit the screen
+            MessageBox.Show("Are you sure you're done entering items for this shopping date and store?");
+
         }
     }
 }
