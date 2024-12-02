@@ -14,11 +14,11 @@ namespace HonorsThesisApp
     {
         private static String strServer = ConfigurationManager.AppSettings["server"];
         private static String strDatabase = ConfigurationManager.AppSettings["database"];
-        //private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
+        private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
         private String currBrand = "";
 
-        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
-
+        //     private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form2()
         {
             InitializeComponent();
@@ -47,8 +47,8 @@ namespace HonorsThesisApp
 
 
             // replace with correct connection string
-            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
-
+            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
             // Create the connection (and be sure to dispose it at the end)
             using (SqlConnection cnn = new SqlConnection(connectionString))
@@ -65,7 +65,7 @@ namespace HonorsThesisApp
                     using (SqlCommand cmd = new SqlCommand(sql, cnn))
                     {
                         // Create and set the parameters values 
-                        cmd.Parameters.AddWithValue("@catagory_id", catagorySelector.Text);
+                        cmd.Parameters.AddWithValue("@catagory_id", categorySelector.Text);
                         cmd.Parameters.AddWithValue("@barcode", TB_Barcode.Text);
                         cmd.Parameters.AddWithValue("@brand_id", brandSelector.Text);
                         cmd.Parameters.AddWithValue("@product_name", TB_Item.Text);
@@ -99,8 +99,8 @@ namespace HonorsThesisApp
         private void addNewBrandName()
         {
             // replace with correct connection string
-            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
-
+            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
             // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
 
@@ -137,7 +137,8 @@ namespace HonorsThesisApp
         private void addNewItemName()
         {
             // replace with correct connection string
-            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
 
             // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
@@ -228,11 +229,12 @@ namespace HonorsThesisApp
 
                     using (SqlCommand command = new SqlCommand(query, conn))
                     {
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                catagorySelector.Items.Add(reader[0].ToString());
+                                categorySelector.Items.Add(reader[0].ToString());
                             }
                         }
 
@@ -248,6 +250,8 @@ namespace HonorsThesisApp
         private void button_addNewBrand_Click(object sender, EventArgs e)
         {
             TB_NewBrandName.Visible = true;
+            addBrandToDB.Visible = true;
+            button_addNewBrand.Visible = false;
         }
 
         private void button_addNewItemName_Click(object sender, EventArgs e)
@@ -273,6 +277,11 @@ namespace HonorsThesisApp
 
                     using (SqlCommand command = new SqlCommand(query, conn))
                     {
+                        String selectedCategory = "";
+                        if (categorySelector.SelectedItem != null)
+                        {
+                            selectedCategory = categorySelector.SelectedItem.ToString();
+                        }
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
@@ -296,10 +305,55 @@ namespace HonorsThesisApp
             }
         }
 
+        private void addBrandToDB_Click(object sender, EventArgs e)
+        {
+            if (TB_NewBrandName != null)
+            {
+
+                String query = "INSERT INTO Brand VALUES(@brand)";
+                // Create the connection (and be sure to dispose it at the end)
+                using (SqlConnection cnn = new SqlConnection(connString))
+                {
+                    try
+                    {
+                        // Open the connection to the database. 
+                        // This is the first critical step in the process.
+                        // If we cannot reach the db then we have connectivity problems
+                        cnn.Open();
+
+                        // Prepare the command to be executed on the db
+                        using (SqlCommand cmd = new SqlCommand(query, cnn))
+                        {
+                            // Create and set the parameters values 
+                            cmd.Parameters.AddWithValue("@brand", TB_NewBrandName.Text);
+                            int rowsAdded = cmd.ExecuteNonQuery();
+                            if (rowsAdded > 0)
+                                MessageBox.Show("Row inserted!!");
+                            else
+                                // Well this should never really n
+                                MessageBox.Show("No row inserted");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("ERROR:" + ex.Message);
+                    }
+                }
+                brandSelector.Items.Clear();
+                LoadBrand_CBData();
+                TB_NewBrandName.Visible = false;
+                addBrandToDB.Visible = false;
+                button_addNewBrand.Visible = true;
+            }
+        }
+
+
         private void button_Submit_Click(object sender, EventArgs e)
         {
             // exit the screen
             MessageBox.Show("Are you sure you're done entering items for this shopping date and store?");
+
+
 
         }
     }
