@@ -215,7 +215,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
-            ClientSize = new Size(473, 512);
+            ClientSize = new Size(473, 489);
             Controls.Add(button_Next);
             Controls.Add(GB_StoreInfo);
             Controls.Add(L_Date);
