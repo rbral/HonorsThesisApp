@@ -191,6 +191,7 @@ namespace HonorsThesisApp
                         {
                             selectedBrand = brandSelector.SelectedItem.ToString();
                         }
+                        TB_Item.Items.Clear();
                         command.Parameters.AddWithValue("@currBrand", selectedBrand);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -226,12 +227,14 @@ namespace HonorsThesisApp
                 try
                 {
                     conn.Open();
+                    categorySelector.Items.Clear();
 
                     using (SqlCommand command = new SqlCommand(query, conn))
                     {
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
+                            
                             while (reader.Read())
                             {
                                 categorySelector.Items.Add(reader[0].ToString());

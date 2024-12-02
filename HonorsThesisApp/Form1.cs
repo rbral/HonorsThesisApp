@@ -40,7 +40,7 @@ namespace HonorsThesisApp
 
         private void addStore()
         {
-            string sql = "INSERT INTO Stores (store_name, staddress, city, state, postal_code, country) " +
+            string sql = "INSERT INTO Stores (store_name, address, city, state, postal_code, country) " +
              "VALUES (@store, @staddress, @city, @state, @zip, 'USA')";
 
             // Create the connection (and be sure to dispose it at the end)
