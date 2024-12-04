@@ -22,7 +22,6 @@ namespace HonorsThesisApp
             InitializeComponent();
             dateTimePicker1.Value = DateTime.Now;
             LoadItemNames();
-            //savePageInformation();
         }
 
         private void L_Receipt_Title_Click(object sender, EventArgs e)
@@ -30,10 +29,14 @@ namespace HonorsThesisApp
 
         }
 
+        //creates a new Form 2 when the user clicks Next
         private void button_Next_Click(object sender, EventArgs e)
         {
-            addStore();
-            Form2 newForm = new Form2(); // Create an instance of the new form
+            addStore(); //this should only happen if the user doesn't select a store
+
+            int storeID = 0; //replace with actual store id
+
+            Form2 newForm = new Form2(storeID); // Create an instance of the new form
             newForm.Show();              // Show the new form
             this.Hide();                 // Optionally hide the current form
         }
@@ -49,37 +52,28 @@ namespace HonorsThesisApp
 
                 try
                 {
-                    // Open the connection to the database. 
-                    // This is the first critical step in the process.
-                    // If we cannot reach the db then we have connectivity problems
+                    // open the connection & prepare the command
                     cnn.Open();
 
-                    // Prepare the command to be executed on the db
                     using (SqlCommand cmd = new SqlCommand(sql, cnn))
                     {
-                        // Create and set the parameters values 
                         cmd.Parameters.AddWithValue("@date", dateTimePicker1.Value);
-                        // have enum here to pass in storeid possibly?? 
                         cmd.Parameters.AddWithValue("@store", TB_StoreName.Text);
                         cmd.Parameters.AddWithValue("@staddress", TB_Address.Text);
                         cmd.Parameters.AddWithValue("@city", TB_City.Text);
                         cmd.Parameters.AddWithValue("@state", TB_State.Text);
                         cmd.Parameters.AddWithValue("@zip", TB_Zip.Text);
 
-                        // Let's ask the db to execute the query
+                        //execute the query
                         int rowsAdded = cmd.ExecuteNonQuery();
                         if (rowsAdded > 0)
-                            MessageBox.Show("Row inserted!!");
+                            MessageBox.Show("Row successfully inserted!");
                         else
-                            // Well this should never really happen
                             MessageBox.Show("No row inserted");
-
                     }
                 }
                 catch (Exception ex)
                 {
-                    // We should log the error somewhere, 
-                    // for this example let's just show a message
                     MessageBox.Show("ERROR:" + ex.Message);
                 }
             }

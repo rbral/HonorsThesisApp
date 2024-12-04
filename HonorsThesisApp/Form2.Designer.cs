@@ -74,7 +74,6 @@
             categorySelector.Size = new Size(120, 23);
             categorySelector.TabIndex = 5;
             categorySelector.Text = "Select category";
-            categorySelector.SelectedIndexChanged += catagorySelector_SelectedIndexChanged;
             // 
             // GB_StoreInfo
             // 
@@ -115,6 +114,7 @@
             addItemToDB.TextImageRelation = TextImageRelation.TextBeforeImage;
             addItemToDB.UseVisualStyleBackColor = true;
             addItemToDB.Visible = false;
+            addItemToDB.Click += addItemToDB_Click;
             // 
             // addBrandToDB
             // 
@@ -270,9 +270,9 @@
             button_AddItem.Location = new Point(12, 352);
             button_AddItem.Margin = new Padding(2, 1, 2, 1);
             button_AddItem.Name = "button_AddItem";
-            button_AddItem.Size = new Size(66, 25);
+            button_AddItem.Size = new Size(113, 25);
             button_AddItem.TabIndex = 13;
-            button_AddItem.Text = "Add Item";
+            button_AddItem.Text = "Add Item To Store";
             button_AddItem.UseVisualStyleBackColor = true;
             button_AddItem.Click += button_AddItem_Click;
             // 
