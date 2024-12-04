@@ -310,6 +310,7 @@ namespace HonorsThesisApp
         {
             TB_NewItemName.Visible = true;
             addItemToDB.Visible = true;
+            button_addNewItemName.Visible = false;  
         }
 
 
