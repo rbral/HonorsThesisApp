@@ -1,5 +1,9 @@
 using System;
+using System.Configuration;
+using System.Configuration.Provider;
+using System.Data;
 using Microsoft.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 
 
@@ -7,106 +11,177 @@ namespace HonorsThesisApp
 {
     public partial class Form1 : Form
     {
+        private static String strServer = ConfigurationManager.AppSettings["server"];
+        private static String strDatabase = ConfigurationManager.AppSettings["database"];
+        private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
+
+        //   private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+
+        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form1()
         {
             InitializeComponent();
+            LoadStores();
             dateTimePicker1.Value = DateTime.Now;
-            //LoadItemNames();
         }
 
-        private void L_Receipt_Title_Click(object sender, EventArgs e)
+        //get store Id
+        private int GetStoreId()
         {
+            string query = "SELECT store_id FROM Stores WHERE store_name = @currStore";
+            int storeId = 0;
 
-        }
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
 
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@currSTore", storeSelector.SelectedItem);
+                        try
+                        {
+                            var result = command.ExecuteScalar();
+                            if (result != DBNull.Value)
+                            {
+                                storeId = Convert.ToInt32(result);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Error: " + ex.Message);
+                        }
+
+                    }
+                    
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+               
+                   
+                }
+                return storeId;
+
+            }
+ 
+
+        //creates a new Form 2 when the user clicks Next
         private void button_Next_Click(object sender, EventArgs e)
         {
-          //  savePageInformation();
-            Form2 newForm = new Form2(); // Create an instance of the new form
-            newForm.Show();              // Show the new form
-            this.Hide();                 // Optionally hide the current form
+
+
+            int storeID = GetStoreId();
+            DateTime date = dateTimePicker1.Value;
+            if (storeID != 0)
+            {
+                Form2 newForm = new Form2(storeID, date); // Create an instance of the new form
+                newForm.Show();              // Show the new form
+                this.Hide();                 // Optionally hide the current form
+            }
+            else
+            {
+                MessageBox.Show("Error. No valid store selected");
+            }
         }
 
-        private void savePageInformation()
-        {     
-            // replace with correct connection string
-            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+      
 
-            // replace with actual sql statement using correct parameters
-            String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
+        //not sure what this does or if we need this
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        { 
+
+        }
+
+        //load the stores into the selector
+        private void LoadStores()
+        {
+            string query = "SELECT store_name FROM Stores";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        String selectedStore = "";
+                        if (storeSelector.SelectedItem != null)
+                        {
+                            selectedStore = storeSelector.SelectedItem.ToString();
+                        }
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                storeSelector.Items.Add(reader[0].ToString());
+
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+
+            }
+        }
+
+        
+        //add a store & clear the field
+        private void addStoreButton_Click(object sender, EventArgs e)
+        {
+            storeSelector.Items.Clear();
+            AddStore();
+            TB_Address.Clear();
+            TB_City.Clear();
+            TB_State.Clear();
+            TB_Zip.Clear();
+            TB_StoreName.Clear();
+            LoadStores();
+        }
+        private void AddStore()
+        {
+            string sql = "INSERT INTO Stores (store_name, address, city, state, postal_code, country) " +
+             "VALUES (@store, @staddress, @city, @state, @zip, 'USA')";
 
             // Create the connection (and be sure to dispose it at the end)
-            using (SqlConnection cnn = new SqlConnection(connectionString))
+            using (SqlConnection cnn = new SqlConnection(connString))
             {
 
                 try
                 {
-                    // Open the connection to the database. 
-                    // This is the first critical step in the process.
-                    // If we cannot reach the db then we have connectivity problems
+                    // open the connection & prepare the command
                     cnn.Open();
 
-                    // Prepare the command to be executed on the db
                     using (SqlCommand cmd = new SqlCommand(sql, cnn))
                     {
-                        // Create and set the parameters values 
                         cmd.Parameters.AddWithValue("@date", dateTimePicker1.Value);
-                        // have enum here to pass in storeid possibly?? 
                         cmd.Parameters.AddWithValue("@store", TB_StoreName.Text);
                         cmd.Parameters.AddWithValue("@staddress", TB_Address.Text);
                         cmd.Parameters.AddWithValue("@city", TB_City.Text);
                         cmd.Parameters.AddWithValue("@state", TB_State.Text);
                         cmd.Parameters.AddWithValue("@zip", TB_Zip.Text);
 
-                        // Let's ask the db to execute the query
+                        //execute the query
                         int rowsAdded = cmd.ExecuteNonQuery();
                         if (rowsAdded > 0)
-                            MessageBox.Show("Row inserted!!");
+                            MessageBox.Show("Row successfully inserted!");
                         else
-                            // Well this should never really happen
                             MessageBox.Show("No row inserted");
-
                     }
                 }
                 catch (Exception ex)
                 {
-                    // We should log the error somewhere, 
-                    // for this example let's just show a message
                     MessageBox.Show("ERROR:" + ex.Message);
                 }
-            } 
+            }
         }
-
-    
-
-        /*private void LoadItemNames()
-        {
-            //TODO: replace with actual server and database names and query
-            var server = "RIVKALAPTOP\\SQLEXPRESS01";
-            var database = "Store"; 
-            String strConnect = $"Server={server};Database={database};Trusted_Connection=True;";
-            String query = "SELECT BrandName FROM Brand"; 
-            SqlConnection sqlCon;
-            try
-            {
-                sqlCon = new SqlConnection(strConnect);
-                sqlCon.Open();
-                SqlCommand command = new SqlCommand(query, sqlCon);
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Populate ComboBox with data from the database
-                while (reader.Read())
-                {
-                    comboBox_Brand.Items.Add(reader["BrandName"].ToString());
-                }
-
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-        }*/
     }
 }
