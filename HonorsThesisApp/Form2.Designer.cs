@@ -188,7 +188,7 @@
             brandSelector.Name = "brandSelector";
             brandSelector.Size = new Size(132, 23);
             brandSelector.TabIndex = 9;
-         
+
             brandSelector.SelectedValueChanged += brandSelector_SelectedIndexChanged;
             // 
             // TB_Price
