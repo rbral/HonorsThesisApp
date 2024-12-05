@@ -1,4 +1,6 @@
-﻿using System;
+﻿// old version partially edited from chatgt
+
+using System;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Data;
@@ -8,6 +10,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace HonorsThesisApp
 {
@@ -19,8 +22,8 @@ namespace HonorsThesisApp
         private String currBrand = "";
         private int storeID;
 
-        //     private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
-        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form2(int storeID)
         {
             InitializeComponent();
@@ -31,11 +34,191 @@ namespace HonorsThesisApp
 
         }
 
+        #region Load Combo Box Data
+        //gets all categories
+        private void LoadCategory_CBData()
+        {
+            string query = "SELECT category_name FROM Categories ORDER BY category_name";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+                    //categorySelector.Items.Clear();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+
+                            while (reader.Read())
+                            {
+                                categorySelector.Items.Add(reader[0].ToString());
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+            }
+
+        }
+
+        private void LoadBrand_CBData()
+        {
+            string query = "SELECT brand_name FROM Brand ORDER BY brand_name";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        String selectedCategory = "";
+                        if (categorySelector.SelectedItem != null)
+                        {
+                            selectedCategory = categorySelector.SelectedItem.ToString();
+                        }
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                brandSelector.Items.Add(reader[0].ToString());
+                                //   brandSelector.SelectedItem = reader[0].ToString();
+                            }
+                        }
+                    }
+                    brandSelector.Items.Add("Other");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+            }
+        }
+
+        //gets all items
+        private void LoadItem_CBData()
+        {
+            //  string query = "SELECT product_name FROM Products";
+
+            if (brandSelector.SelectedItem?.ToString() == "Add New")
+            {
+                return; // skip loading if add new is chosen for brand
+            }
+
+            string query = "SELECT product_name FROM Products p JOIN Brand b ON p.brand_id = b.brand_id WHERE brand_name = @currBrand";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        String selectedBrand = "";
+                        if (brandSelector.SelectedItem != null)
+                        {
+                            selectedBrand = brandSelector.SelectedItem.ToString();
+                        }
+                        TB_Item.Items.Clear();
+                        command.Parameters.AddWithValue("@currBrand", selectedBrand);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                TB_Item.Items.Add(reader[0].ToString());
+                            }
+                        }
+
+                    }
+                    TB_Item.Items.Add("Add New");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
+                }
+
+            }
+        }
+        #endregion
+
+        #region Selected Index Changed
+        private void brandSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (brandSelector.SelectedItem?.ToString() == "Add New")
+            {
+                TB_NewBrandName.Visible = true;
+                TB_NewBrandName.Text = "Enter New Brand";
+            }
+            else
+            {
+                TB_NewBrandName.Visible = false;
+                LoadItem_CBData();
+            }
+        }
+
+        private void TB_Item_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (TB_Item.SelectedItem?.ToString() == "Add New")
+            {
+                TB_NewItemName.Visible = true;
+                TB_NewItemName.Text = "Enter New Item";
+            }
+            else
+            {
+                TB_NewItemName.Visible = false;
+            }
+        }
+
+        #endregion
+
+
+        // one button click for all changes:
+
+
         //this is for adding an item to a store - NOT DONE
         private void button_AddItem_Click(object sender, EventArgs e)
         {
+            // validations:
+            if (categorySelector.SelectedItem == null || string.IsNullOrWhiteSpace(TB_Barcode.Text))
+            {
+                MessageBox.Show("Category and barcode must be entered before adding a new item.");
+                return;
+            }
+
+            if (brandSelector.SelectedItem?.ToString() == "Add New" && string.IsNullOrWhiteSpace(TB_NewBrandName.Text))
+            {
+                MessageBox.Show("Please enter a new brand name.");
+                return;
+            }
+
+            if (TB_Item.SelectedItem?.ToString() == "Add New" && string.IsNullOrWhiteSpace(TB_NewItemName.Text))
+            {
+                MessageBox.Show("Please enter a new item name.");
+                return;
+            }
+
             // check if user added a new item name or brand name:
-            if (!TB_NewBrandName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Brand")
+            string newBrandName = TB_NewBrandName.Visible ? TB_NewBrandName.Text : null;
+            string newItemName = TB_NewItemName.Visible ? TB_NewItemName.Text : null;
+
+            int categoryId = 0;
+            int brandId = 0;
+
+
+            // database operations:
+
+
+            // check if user added a new item name or brand name:
+/*            if (!TB_NewBrandName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Brand")
             {
                 addNewBrandName();
             }
@@ -43,15 +226,13 @@ namespace HonorsThesisApp
             if (!TB_NewItemName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Item")
             {
                 addNewItemName();
-            }
+            }*/
 
 
-            // replace with correct connection string
-            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
-            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            //String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
 
-            // Create the connection (and be sure to dispose it at the end)
             using (SqlConnection cnn = new SqlConnection(connectionString))
             {
 
@@ -103,8 +284,8 @@ namespace HonorsThesisApp
         private void addNewBrandName()
         {
             // replace with correct connection string
-            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
-            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            //String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
             // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
 
@@ -142,8 +323,8 @@ namespace HonorsThesisApp
         private void addNewItemName()
         {
             // replace with correct connection string
-            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
-            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            //String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
 
             // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
@@ -177,147 +358,10 @@ namespace HonorsThesisApp
             }
         }
 
-        //gets all items
-        private void LoadItem_CBData()
-        {
-            //  string query = "SELECT product_name FROM Products";
-
-            string query = "SELECT product_name FROM Products p JOIN Brand b ON p.brand_id = b.brand_id WHERE brand_name = @currBrand";
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                try
-                {
-                    conn.Open();
-
-                    using (SqlCommand command = new SqlCommand(query, conn))
-                    {
-                        String selectedBrand = "";
-                        if (brandSelector.SelectedItem != null)
-                        {
-                            selectedBrand = brandSelector.SelectedItem.ToString();
-                        }
-                        TB_Item.Items.Clear();
-                        command.Parameters.AddWithValue("@currBrand", selectedBrand);
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                TB_Item.Items.Add(reader[0].ToString());
-                            }
-                        }
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading data: {ex.Message}");
-                }
-
-            }
-        }
-
-        //gets all categories
-        private void LoadCategory_CBData()
-        {
-            string query = "SELECT category_name FROM Categories";
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                try
-                {
-                    conn.Open();
-                    //categorySelector.Items.Clear();
-
-                    using (SqlCommand command = new SqlCommand(query, conn))
-                    {
-
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-
-                            while (reader.Read())
-                            {
-                                categorySelector.Items.Add(reader[0].ToString());
-                            }
-                        }
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading data: {ex.Message}");
-                }
-            }
-
-        }
-
-        //gets all brands
-        private void brandSelector_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //   LoadBrand_CBData();
-            LoadItem_CBData();
-        }
-        private void LoadBrand_CBData()
-        {
-            string query = "SELECT brand_name FROM Brand";
-
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                try
-                {
-                    conn.Open();
-
-                    using (SqlCommand command = new SqlCommand(query, conn))
-                    {
-                        String selectedCategory = "";
-                        if (categorySelector.SelectedItem != null)
-                        {
-                            selectedCategory = categorySelector.SelectedItem.ToString();
-                        }
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                brandSelector.Items.Add(reader[0].ToString());
-                                //   brandSelector.SelectedItem = reader[0].ToString();
-                            }
-                        }
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading data: {ex.Message}");
-                }
 
 
 
-
-
-            }
-        }
-
-
-        //buttons to make fields to add new brand/item
-        private void button_addNewBrand_Click(object sender, EventArgs e)
-        {
-            TB_NewBrandName.Visible = true;
-            addBrandToDB.Visible = true;
-            button_addNewBrand.Visible = false;
-        }
-
-        private void button_addNewItemName_Click(object sender, EventArgs e)
-        {
-            TB_NewItemName.Visible = true;
-            addItemToDB.Visible = true;
-            button_addNewItemName.Visible = false;  
-        }
-
-
-  
-
- 
-       // this actually adds a new brand
+        // this actually adds a new brand
         private void addBrandToDB_Click(object sender, EventArgs e)
         {
             if (TB_NewBrandName != null)
@@ -329,7 +373,7 @@ namespace HonorsThesisApp
                 {
                     try
                     {
-                        
+
                         // If we cannot reach the db then we have connectivity problems
                         cnn.Open();
 
@@ -373,26 +417,40 @@ namespace HonorsThesisApp
             {
                 MessageBox.Show("Category, brand, and barcode must be entered before adding a new item.");
             }
-            else if (TB_NewItemName == null)
+            else if (brandSelector.SelectedItem?.ToString() == "Add new" && string.IsNullOrEmpty(TB_NewBrandName.Text))
             {
-                MessageBox.Show("You must enter an item name before pressing add Item");
+                MessageBox.Show("Please enter a new brand name");
             }
+            else if (TB_Item.SelectedItem?.ToString() == "Add new" && string.IsNullOrEmpty(TB_NewItemName.Text))
+            {
+                MessageBox.Show("Please enter a new item name");
+            }
+
+
+
+            //else if (TB_NewItemName == null)
+            //{
+            //    MessageBox.Show("You must enter an item name before pressing add Item");
+            //}
             else
             {
+                string newBrandName = TB_NewBrandName.Visible ? TB_NewBrandName.Text : null;
+                string newItemName = TB_NewItemName.Visible ? TB_NewItemName.Text : null;
+
                 int category = 0;
                 int brand = 0;
                 string getCategoryId = "SELECT category_id FROM Categories WHERE category_name = @catname";
                 string getBrandId = "SELECT brand_id FROM brand WHERE brand_name = @brandname";
-                String query = "INSERT INTO Products VALUES(@barcode, @item, @brand, @category)";
+                string query = "INSERT INTO Products VALUES(@barcode, @item, @brand, @category)";
                 // Create the connection (and be sure to dispose it at the end)
                 using (SqlConnection cnn = new SqlConnection(connString))
                 {
                     try
                     {
                         // Open the connection to the database. 
-                        cnn.Open();                        
+                        cnn.Open();
                         //get category & brand ID
-                        using(SqlCommand cmd = new SqlCommand(getCategoryId, cnn))
+                        using (SqlCommand cmd = new SqlCommand(getCategoryId, cnn))
                         {
                             cmd.Parameters.AddWithValue("@catname", categorySelector.SelectedItem);
                             try
@@ -408,6 +466,7 @@ namespace HonorsThesisApp
                                 Console.WriteLine("Error: " + ex.Message);
                             }
                         }
+
                         using (SqlCommand cmd = new SqlCommand(getBrandId, cnn))
                         {
                             cmd.Parameters.AddWithValue("@brandname", brandSelector.SelectedItem);
@@ -437,7 +496,7 @@ namespace HonorsThesisApp
                             if (rowsAdded > 0)
                                 MessageBox.Show("Row inserted!!");
                             else
-                         //       // Well this should never really n
+                                //       // Well this should never really n
                                 MessageBox.Show("No row inserted");
                         }
                     }
@@ -446,6 +505,7 @@ namespace HonorsThesisApp
                         MessageBox.Show("ERROR:" + ex.Message);
                     }
                 }
+
                 TB_Item.Items.Clear();
                 LoadItem_CBData();
                 TB_NewItemName.Visible = false;
@@ -453,5 +513,7 @@ namespace HonorsThesisApp
                 button_addNewItemName.Visible = true;
             }
         }
+
     }
-}
+} 
+
