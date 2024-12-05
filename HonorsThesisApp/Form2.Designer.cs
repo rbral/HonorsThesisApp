@@ -284,7 +284,7 @@
         private Button button_addNewItemName;
         private Button button_addNewBrand;
         private TextBox TB_NewItemName;
-        private Button addBrandToDB;
-        private Button addItemToDB;
+        //private Button addBrandToDB;
+        //private Button addItemToDB;
     }
 }

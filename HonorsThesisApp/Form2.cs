@@ -183,56 +183,37 @@ namespace HonorsThesisApp
 
         // one button click for all changes:
 
+// from rockiconnectsql ---------------------------------------------------------------------------------
+
 
         //this is for adding an item to a store - NOT DONE
         private void button_AddItem_Click(object sender, EventArgs e)
         {
-            // validations:
-            if (categorySelector.SelectedItem == null || string.IsNullOrWhiteSpace(TB_Barcode.Text))
-            {
-                MessageBox.Show("Category and barcode must be entered before adding a new item.");
-                return;
-            }
 
-            if (brandSelector.SelectedItem?.ToString() == "Add New" && string.IsNullOrWhiteSpace(TB_NewBrandName.Text))
+            if (categorySelector.SelectedItem == null || brandSelector.SelectedItem == null || TB_Barcode.Text.IsNullOrEmpty())
             {
-                MessageBox.Show("Please enter a new brand name.");
-                return;
-            }
-
-            if (TB_Item.SelectedItem?.ToString() == "Add New" && string.IsNullOrWhiteSpace(TB_NewItemName.Text))
-            {
-                MessageBox.Show("Please enter a new item name.");
+                MessageBox.Show("Category, brand, and barcode must be entered before adding a new item.");
                 return;
             }
 
             // check if user added a new item name or brand name:
-            string newBrandName = TB_NewBrandName.Visible ? TB_NewBrandName.Text : null;
-            string newItemName = TB_NewItemName.Visible ? TB_NewItemName.Text : null;
-
-            int categoryId = 0;
-            int brandId = 0;
-
-
-            // database operations:
-
-
-            // check if user added a new item name or brand name:
-/*            if (!TB_NewBrandName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Brand")
+            if (!TB_NewBrandName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Brand")
             {
-                addNewBrandName();
+                addBrandToDB();
             }
 
             if (!TB_NewItemName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Item")
             {
-                addNewItemName();
-            }*/
+                addItemToDB();
+            }
 
 
-            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
-            //String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            // replace with correct connection string
+            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
 
+            // Create the connection (and be sure to dispose it at the end)
             using (SqlConnection cnn = new SqlConnection(connectionString))
             {
 
@@ -280,12 +261,12 @@ namespace HonorsThesisApp
         }
 
 
-        //create a new brand - WHAT DOES THIS DO, ISNT IT IN addBrandToDB_Click
-        private void addNewBrandName()
+        //create a new brand - WHAT DOES THIS DO, ISNT IT IN addBrandToDB_Click - RB: I think we can delete
+        /*private void addNewBrandName()
         {
             // replace with correct connection string
-            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
-            //String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
             // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
 
@@ -317,14 +298,14 @@ namespace HonorsThesisApp
                     MessageBox.Show("ERROR:" + ex.Message);
                 }
             }
-        }
+        }*/
 
         //what does this do? - isnt this add new item to db?
-        private void addNewItemName()
+        /*private void addNewItemName()
         {
             // replace with correct connection string
-            String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
-            //String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
+            //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
+            String connectionString = "Data Source=UMAIR;Initial Catalog=Air; Trusted_Connection=True;";
 
             // replace with actual sql statement using correct parameters
             String sql = "insert into Main ([Firt Name], [Last Name]) values(@first,@last)";
@@ -356,13 +337,11 @@ namespace HonorsThesisApp
                     MessageBox.Show("ERROR:" + ex.Message);
                 }
             }
-        }
-
-
+        }*/        
 
 
         // this actually adds a new brand
-        private void addBrandToDB_Click(object sender, EventArgs e)
+        private void addBrandToDB()
         {
             if (TB_NewBrandName != null)
             {
@@ -398,50 +377,31 @@ namespace HonorsThesisApp
                 brandSelector.Items.Clear();
                 LoadBrand_CBData();
                 TB_NewBrandName.Visible = false;
-                addBrandToDB.Visible = false;
-                button_addNewBrand.Visible = true;
+                //addBrandToDB.Visible = false;
+                //button_addNewBrand.Visible = true;
             }
-        }
-        //submit form
-        private void button_Submit_Click(object sender, EventArgs e)
-        {
-            // exit the screen
-            MessageBox.Show("Are you sure you're done entering items for this shopping date and store?");
-
         }
 
         //this is for adding a product
-        private void addItemToDB_Click(object sender, EventArgs e)
+        private void addItemToDB()
         {
-            if (categorySelector.SelectedItem == null || brandSelector.SelectedItem == null || TB_Barcode.Text == "")
+            if (categorySelector.SelectedItem == null || brandSelector.SelectedItem == null || TB_Barcode.Text.IsNullOrEmpty())
             {
                 MessageBox.Show("Category, brand, and barcode must be entered before adding a new item.");
+                return;                
             }
-            else if (brandSelector.SelectedItem?.ToString() == "Add new" && string.IsNullOrEmpty(TB_NewBrandName.Text))
+            else if (TB_NewItemName == null)
             {
-                MessageBox.Show("Please enter a new brand name");
+                MessageBox.Show("You must enter an item name before pressing add Item");
+                return;
             }
-            else if (TB_Item.SelectedItem?.ToString() == "Add new" && string.IsNullOrEmpty(TB_NewItemName.Text))
-            {
-                MessageBox.Show("Please enter a new item name");
-            }
-
-
-
-            //else if (TB_NewItemName == null)
-            //{
-            //    MessageBox.Show("You must enter an item name before pressing add Item");
-            //}
             else
             {
-                string newBrandName = TB_NewBrandName.Visible ? TB_NewBrandName.Text : null;
-                string newItemName = TB_NewItemName.Visible ? TB_NewItemName.Text : null;
-
                 int category = 0;
                 int brand = 0;
                 string getCategoryId = "SELECT category_id FROM Categories WHERE category_name = @catname";
                 string getBrandId = "SELECT brand_id FROM brand WHERE brand_name = @brandname";
-                string query = "INSERT INTO Products VALUES(@barcode, @item, @brand, @category)";
+                String query = "INSERT INTO Products VALUES(@barcode, @item, @brand, @category)";
                 // Create the connection (and be sure to dispose it at the end)
                 using (SqlConnection cnn = new SqlConnection(connString))
                 {
@@ -466,7 +426,6 @@ namespace HonorsThesisApp
                                 Console.WriteLine("Error: " + ex.Message);
                             }
                         }
-
                         using (SqlCommand cmd = new SqlCommand(getBrandId, cnn))
                         {
                             cmd.Parameters.AddWithValue("@brandname", brandSelector.SelectedItem);
@@ -505,15 +464,20 @@ namespace HonorsThesisApp
                         MessageBox.Show("ERROR:" + ex.Message);
                     }
                 }
-
                 TB_Item.Items.Clear();
                 LoadItem_CBData();
                 TB_NewItemName.Visible = false;
-                addItemToDB.Visible = false;
-                button_addNewItemName.Visible = true;
+                //addItemToDB.Visible = false;
+                //button_addNewItemName.Visible = true;
             }
         }
 
-    }
-} 
+        //submit form
+        private void button_Submit_Click(object sender, EventArgs e)
+        {
+            // exit the screen
+            MessageBox.Show("Are you sure you're done entering items for this shopping date and store?");
 
+        }
+    }
+}
