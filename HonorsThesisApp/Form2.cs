@@ -94,7 +94,7 @@ namespace HonorsThesisApp
                             }
                         }
                     }
-                    brandSelector.Items.Add("Other");
+                    brandSelector.Items.Add("Add New");
                 }
                 catch (Exception ex)
                 {
