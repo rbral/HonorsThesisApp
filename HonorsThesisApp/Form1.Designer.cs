@@ -43,12 +43,16 @@
             TB_StoreName = new TextBox();
             label1 = new Label();
             button_Next = new Button();
+            label7 = new Label();
+            storeSelector = new ComboBox();
+            label6 = new Label();
+            addStoreButton = new Button();
             GB_StoreInfo.SuspendLayout();
             SuspendLayout();
             // 
             // dateTimePicker1
             // 
-            dateTimePicker1.Location = new Point(197, 109);
+            dateTimePicker1.Location = new Point(197, 55);
             dateTimePicker1.Margin = new Padding(2, 1, 2, 1);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(176, 23);
@@ -59,21 +63,20 @@
             // 
             L_Receipt_Title.AutoSize = true;
             L_Receipt_Title.Font = new Font("Segoe UI", 16.125F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            L_Receipt_Title.Location = new Point(129, 42);
+            L_Receipt_Title.Location = new Point(129, 14);
             L_Receipt_Title.Margin = new Padding(2, 0, 2, 0);
             L_Receipt_Title.Name = "L_Receipt_Title";
             L_Receipt_Title.Size = new Size(160, 30);
             L_Receipt_Title.TabIndex = 3;
             L_Receipt_Title.Text = "Receipt Upload";
             L_Receipt_Title.TextAlign = ContentAlignment.MiddleCenter;
-            L_Receipt_Title.Click += L_Receipt_Title_Click;
             // 
             // L_Date
             // 
             L_Date.AutoSize = true;
             L_Date.BackColor = SystemColors.Control;
             L_Date.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            L_Date.Location = new Point(50, 106);
+            L_Date.Location = new Point(50, 57);
             L_Date.Margin = new Padding(2, 0, 2, 0);
             L_Date.Name = "L_Date";
             L_Date.Size = new Size(130, 21);
@@ -84,6 +87,7 @@
             // GB_StoreInfo
             // 
             GB_StoreInfo.BackColor = SystemColors.Control;
+            GB_StoreInfo.Controls.Add(addStoreButton);
             GB_StoreInfo.Controls.Add(TB_Zip);
             GB_StoreInfo.Controls.Add(TB_State);
             GB_StoreInfo.Controls.Add(TB_City);
@@ -95,7 +99,7 @@
             GB_StoreInfo.Controls.Add(TB_StoreName);
             GB_StoreInfo.Controls.Add(label1);
             GB_StoreInfo.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            GB_StoreInfo.Location = new Point(50, 159);
+            GB_StoreInfo.Location = new Point(50, 168);
             GB_StoreInfo.Margin = new Padding(2, 1, 2, 1);
             GB_StoreInfo.Name = "GB_StoreInfo";
             GB_StoreInfo.Padding = new Padding(2, 1, 2, 1);
@@ -210,12 +214,60 @@
             button_Next.UseVisualStyleBackColor = true;
             button_Next.Click += button_Next_Click;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.BackColor = SystemColors.Control;
+            label7.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label7.Location = new Point(50, 102);
+            label7.Margin = new Padding(2, 0, 2, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(94, 21);
+            label7.TabIndex = 8;
+            label7.Text = "Select Store:";
+            label7.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // storeSelector
+            // 
+            storeSelector.FormattingEnabled = true;
+            storeSelector.Location = new Point(197, 100);
+            storeSelector.Name = "storeSelector";
+            storeSelector.Size = new Size(176, 23);
+            storeSelector.TabIndex = 9;
+            storeSelector.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.BackColor = SystemColors.Control;
+            label6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(159, 139);
+            label6.Margin = new Padding(2, 0, 2, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(114, 21);
+            label6.TabIndex = 10;
+            label6.Text = "Or Add A Store";
+            label6.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // addStoreButton
+            // 
+            addStoreButton.Location = new Point(13, 236);
+            addStoreButton.Name = "addStoreButton";
+            addStoreButton.Size = new Size(117, 23);
+            addStoreButton.TabIndex = 10;
+            addStoreButton.Text = "Add Store";
+            addStoreButton.UseVisualStyleBackColor = true;
+            addStoreButton.Click += addStoreButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
             ClientSize = new Size(473, 489);
+            Controls.Add(label6);
+            Controls.Add(storeSelector);
+            Controls.Add(label7);
             Controls.Add(button_Next);
             Controls.Add(GB_StoreInfo);
             Controls.Add(L_Date);
@@ -247,5 +299,9 @@
         private TextBox TB_Zip;
         private TextBox TB_State;
         private Button button_Next;
+        private Label label7;
+        private ComboBox storeSelector;
+        private Label label6;
+        private Button addStoreButton;
     }
 }

@@ -20,14 +20,10 @@ namespace HonorsThesisApp
         public Form1()
         {
             InitializeComponent();
+            loadStores();
             dateTimePicker1.Value = DateTime.Now;
-            LoadItemNames();
         }
 
-        private void L_Receipt_Title_Click(object sender, EventArgs e)
-        {
-
-        }
 
         //creates a new Form 2 when the user clicks Next
         private void button_Next_Click(object sender, EventArgs e)
@@ -40,6 +36,8 @@ namespace HonorsThesisApp
             newForm.Show();              // Show the new form
             this.Hide();                 // Optionally hide the current form
         }
+
+        //add a store
 
         private void addStore()
         {
@@ -79,36 +77,58 @@ namespace HonorsThesisApp
             }
         }
 
-
-
-        private void LoadItemNames()
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            String query = "SELECT brand_name FROM Brand";
-            SqlConnection sqlCon;
-            try
-            {
-                sqlCon = new SqlConnection(connString);
-                sqlCon.Open();
-                SqlCommand command = new SqlCommand(query, sqlCon);
-                SqlDataReader reader = command.ExecuteReader();
 
-                // Populate ComboBox with data from the database
-                List<String> brandList = new List<String>();
-                while (reader.Read())
+
+        }
+
+        private void loadStores()
+        {
+            string query = "SELECT store_name FROM Stores";
+
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                try
                 {
-                    //  comboBox_Brand.Items.Add(reader["BrandName"].ToString());
-                    //  brandList.Add(reader.GetString(1));
-                    //  Console.WriteLine(reader["brand_name"].ToString());
-                    brandList.Add(reader["brand_name"].ToString());
+                    conn.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        String selectedStore = "";
+                        if (storeSelector.SelectedItem != null)
+                        {
+                            selectedStore = storeSelector.SelectedItem.ToString();
+                        }
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                storeSelector.Items.Add(reader[0].ToString());
+
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading data: {ex.Message}");
                 }
 
-                reader.Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+        }
 
+        private void addStoreButton_Click(object sender, EventArgs e)
+        {
+            storeSelector.Items.Clear();
+            addStore();
+            TB_Address.Clear();
+            TB_City.Clear();
+            TB_State.Clear();
+            TB_Zip.Clear();
+            TB_StoreName.Clear();
+            loadStores();
         }
     }
 }

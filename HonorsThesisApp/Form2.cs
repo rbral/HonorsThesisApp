@@ -310,14 +310,14 @@ namespace HonorsThesisApp
         {
             TB_NewItemName.Visible = true;
             addItemToDB.Visible = true;
-            button_addNewItemName.Visible = false;  
+            button_addNewItemName.Visible = false;
         }
 
 
-  
 
- 
-       // this actually adds a new brand
+
+
+        // this actually adds a new brand
         private void addBrandToDB_Click(object sender, EventArgs e)
         {
             if (TB_NewBrandName != null)
@@ -329,7 +329,7 @@ namespace HonorsThesisApp
                 {
                     try
                     {
-                        
+
                         // If we cannot reach the db then we have connectivity problems
                         cnn.Open();
 
@@ -390,9 +390,9 @@ namespace HonorsThesisApp
                     try
                     {
                         // Open the connection to the database. 
-                        cnn.Open();                        
+                        cnn.Open();
                         //get category & brand ID
-                        using(SqlCommand cmd = new SqlCommand(getCategoryId, cnn))
+                        using (SqlCommand cmd = new SqlCommand(getCategoryId, cnn))
                         {
                             cmd.Parameters.AddWithValue("@catname", categorySelector.SelectedItem);
                             try
@@ -437,7 +437,7 @@ namespace HonorsThesisApp
                             if (rowsAdded > 0)
                                 MessageBox.Show("Row inserted!!");
                             else
-                         //       // Well this should never really n
+                                //       // Well this should never really n
                                 MessageBox.Show("No row inserted");
                         }
                     }
