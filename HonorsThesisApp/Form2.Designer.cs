@@ -29,12 +29,10 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            catagorySelector = new ComboBox();
+            categorySelector = new ComboBox();
             GB_StoreInfo = new GroupBox();
             TB_NewItemName = new TextBox();
             TB_NewBrandName = new TextBox();
-            button_addNewItemName = new Button();
-            button_addNewBrand = new Button();
             TB_Item = new ComboBox();
             brandSelector = new ComboBox();
             TB_Price = new TextBox();
@@ -45,7 +43,6 @@
             label10 = new Label();
             groupBox1 = new GroupBox();
             button_AddItem = new Button();
-            button_AddCategory = new Button();
             button_Submit = new Button();
             label2 = new Label();
             GB_StoreInfo.SuspendLayout();
@@ -64,24 +61,21 @@
             label1.TabIndex = 0;
             label1.Text = "Category:";
             // 
-            // catagorySelector
+            // categorySelector
             // 
-            catagorySelector.FormattingEnabled = true;
-            catagorySelector.Location = new Point(267, 66);
-            catagorySelector.Margin = new Padding(4, 2, 4, 2);
-            catagorySelector.Name = "catagorySelector";
-            catagorySelector.Size = new Size(219, 40);
-            catagorySelector.TabIndex = 5;
-            catagorySelector.Text = "Select category";
-            catagorySelector.SelectedIndexChanged += catagorySelector_SelectedIndexChanged;
+            categorySelector.FormattingEnabled = true;
+            categorySelector.Location = new Point(267, 66);
+            categorySelector.Margin = new Padding(4, 2, 4, 2);
+            categorySelector.Name = "categorySelector";
+            categorySelector.Size = new Size(219, 40);
+            categorySelector.TabIndex = 5;
+            categorySelector.Text = "Select category";
             // 
             // GB_StoreInfo
             // 
             GB_StoreInfo.BackColor = SystemColors.Control;
             GB_StoreInfo.Controls.Add(TB_NewItemName);
             GB_StoreInfo.Controls.Add(TB_NewBrandName);
-            GB_StoreInfo.Controls.Add(button_addNewItemName);
-            GB_StoreInfo.Controls.Add(button_addNewBrand);
             GB_StoreInfo.Controls.Add(TB_Item);
             GB_StoreInfo.Controls.Add(brandSelector);
             GB_StoreInfo.Controls.Add(TB_Price);
@@ -95,14 +89,14 @@
             GB_StoreInfo.Margin = new Padding(4, 2, 4, 2);
             GB_StoreInfo.Name = "GB_StoreInfo";
             GB_StoreInfo.Padding = new Padding(4, 2, 4, 2);
-            GB_StoreInfo.Size = new Size(661, 577);
+            GB_StoreInfo.Size = new Size(661, 576);
             GB_StoreInfo.TabIndex = 10;
             GB_StoreInfo.TabStop = false;
             GB_StoreInfo.Text = "Item Information:";
             // 
             // TB_NewItemName
             // 
-            TB_NewItemName.Location = new Point(241, 404);
+            TB_NewItemName.Location = new Point(241, 403);
             TB_NewItemName.Margin = new Padding(4, 2, 4, 2);
             TB_NewItemName.Name = "TB_NewItemName";
             TB_NewItemName.Size = new Size(242, 39);
@@ -120,28 +114,6 @@
             TB_NewBrandName.Text = "Enter New Brand";
             TB_NewBrandName.Visible = false;
             // 
-            // button_addNewItemName
-            // 
-            button_addNewItemName.Location = new Point(503, 339);
-            button_addNewItemName.Margin = new Padding(4, 2, 4, 2);
-            button_addNewItemName.Name = "button_addNewItemName";
-            button_addNewItemName.Size = new Size(128, 40);
-            button_addNewItemName.TabIndex = 15;
-            button_addNewItemName.Text = "Add New";
-            button_addNewItemName.UseVisualStyleBackColor = true;
-            button_addNewItemName.Click += button_addNewItemName_Click;
-            // 
-            // button_addNewBrand
-            // 
-            button_addNewBrand.Location = new Point(503, 178);
-            button_addNewBrand.Margin = new Padding(4, 2, 4, 2);
-            button_addNewBrand.Name = "button_addNewBrand";
-            button_addNewBrand.Size = new Size(128, 40);
-            button_addNewBrand.TabIndex = 14;
-            button_addNewBrand.Text = "Add New";
-            button_addNewBrand.UseVisualStyleBackColor = true;
-            button_addNewBrand.Click += button_addNewBrand_Click;
-            // 
             // TB_Item
             // 
             TB_Item.FormattingEnabled = true;
@@ -150,6 +122,7 @@
             TB_Item.Name = "TB_Item";
             TB_Item.Size = new Size(242, 40);
             TB_Item.TabIndex = 10;
+            TB_Item.SelectedIndexChanged += TB_Item_SelectedIndexChanged;
             // 
             // brandSelector
             // 
@@ -159,6 +132,7 @@
             brandSelector.Name = "brandSelector";
             brandSelector.Size = new Size(242, 40);
             brandSelector.TabIndex = 9;
+            brandSelector.SelectedValueChanged += brandSelector_SelectedIndexChanged;
             // 
             // TB_Price
             // 
@@ -172,7 +146,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label7.Location = new Point(24, 517);
+            label7.Location = new Point(24, 516);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
             label7.Size = new Size(70, 32);
@@ -194,7 +168,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label9.Location = new Point(24, 182);
+            label9.Location = new Point(24, 181);
             label9.Margin = new Padding(4, 0, 4, 0);
             label9.Name = "label9";
             label9.Size = new Size(81, 32);
@@ -224,9 +198,9 @@
             // 
             groupBox1.Controls.Add(button_AddItem);
             groupBox1.Controls.Add(GB_StoreInfo);
-            groupBox1.Controls.Add(catagorySelector);
+            groupBox1.Controls.Add(categorySelector);
             groupBox1.Controls.Add(label1);
-            groupBox1.Location = new Point(30, 134);
+            groupBox1.Location = new Point(82, 130);
             groupBox1.Margin = new Padding(4, 2, 4, 2);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(4, 2, 4, 2);
@@ -237,28 +211,18 @@
             // 
             // button_AddItem
             // 
-            button_AddItem.Location = new Point(22, 750);
+            button_AddItem.Location = new Point(22, 751);
             button_AddItem.Margin = new Padding(4, 2, 4, 2);
             button_AddItem.Name = "button_AddItem";
-            button_AddItem.Size = new Size(123, 53);
+            button_AddItem.Size = new Size(210, 53);
             button_AddItem.TabIndex = 13;
             button_AddItem.Text = "Add Item";
             button_AddItem.UseVisualStyleBackColor = true;
             button_AddItem.Click += button_AddItem_Click;
             // 
-            // button_AddCategory
-            // 
-            button_AddCategory.Location = new Point(30, 1006);
-            button_AddCategory.Margin = new Padding(4, 2, 4, 2);
-            button_AddCategory.Name = "button_AddCategory";
-            button_AddCategory.Size = new Size(186, 62);
-            button_AddCategory.TabIndex = 12;
-            button_AddCategory.Text = "Add Category";
-            button_AddCategory.UseVisualStyleBackColor = true;
-            // 
             // button_Submit
             // 
-            button_Submit.Location = new Point(293, 1094);
+            button_Submit.Location = new Point(366, 992);
             button_Submit.Margin = new Padding(4, 2, 4, 2);
             button_Submit.Name = "button_Submit";
             button_Submit.Size = new Size(175, 64);
@@ -282,10 +246,9 @@
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
-            ClientSize = new Size(826, 1186);
+            ClientSize = new Size(904, 1088);
             Controls.Add(label2);
             Controls.Add(button_Submit);
-            Controls.Add(button_AddCategory);
             Controls.Add(groupBox1);
             Margin = new Padding(4, 2, 4, 2);
             Name = "Form2";
@@ -302,7 +265,7 @@
         #endregion
 
         private Label label1;
-        private ComboBox catagorySelector;
+        private ComboBox categorySelector;
         private GroupBox GB_StoreInfo;
         private TextBox TB_Price;
         private Label label7;
@@ -321,5 +284,7 @@
         private Button button_addNewItemName;
         private Button button_addNewBrand;
         private TextBox TB_NewItemName;
+        //private Button addBrandToDB;
+        //private Button addItemToDB;
     }
 }
