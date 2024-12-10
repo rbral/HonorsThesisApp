@@ -15,9 +15,9 @@ namespace HonorsThesisApp
         private static String strDatabase = ConfigurationManager.AppSettings["database"];
         private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
 
-        //   private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
 
-        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form1()
         {
             InitializeComponent();
