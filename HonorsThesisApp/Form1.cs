@@ -15,9 +15,9 @@ namespace HonorsThesisApp
         private static String strDatabase = ConfigurationManager.AppSettings["database"];
         private String strConnect = $"Server={strServer};Database={strDatabase};TrustServerCertificate=True;";
 
-        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        // private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
 
-        //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form1()
         {
             InitializeComponent();
@@ -39,7 +39,8 @@ namespace HonorsThesisApp
 
                     using (SqlCommand command = new SqlCommand(query, conn))
                     {
-                        command.Parameters.AddWithValue("@currSTore", storeSelector.SelectedItem);
+                        command.Parameters.AddWithValue("@currStore", storeSelector.SelectedItem);
+
                         try
                         {
                             var result = command.ExecuteScalar();
@@ -54,20 +55,20 @@ namespace HonorsThesisApp
                         }
 
                     }
-                    
+
                 }
 
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error loading data: {ex.Message}");
                 }
-               
-                   
-                }
-                return storeId;
+
 
             }
- 
+            return storeId;
+
+        }
+
 
         //creates a new Form 2 when the user clicks Next
         private void button_Next_Click(object sender, EventArgs e)
@@ -88,11 +89,11 @@ namespace HonorsThesisApp
             }
         }
 
-      
+
 
         //not sure what this does or if we need this
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        { 
+        {
 
         }
 
@@ -133,7 +134,7 @@ namespace HonorsThesisApp
             }
         }
 
-        
+
         //add a store & clear the field
         private void addStoreButton_Click(object sender, EventArgs e)
         {
@@ -183,5 +184,7 @@ namespace HonorsThesisApp
                 }
             }
         }
+
+    
     }
 }

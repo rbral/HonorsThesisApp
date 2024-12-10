@@ -4,6 +4,7 @@ using System;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Data;
+using System.Reflection.PortableExecutable;
 using System.Security.AccessControl;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
@@ -110,7 +111,7 @@ namespace HonorsThesisApp
 
             if (brandSelector.SelectedItem?.ToString() == "Add New")
             {
-                return; // skip loading if add new is chosen for brand
+                TB_Item.Items.Add("Add New");
             }
 
             string query = "SELECT product_name FROM Products p JOIN Brand b ON p.brand_id = b.brand_id WHERE brand_name = @currBrand";
@@ -183,7 +184,7 @@ namespace HonorsThesisApp
 
         // one button click for all changes:
 
-// from rockiconnectsql ---------------------------------------------------------------------------------
+        // from rockiconnectsql ---------------------------------------------------------------------------------
 
 
         //this is for adding an item to a store - NOT DONE
@@ -199,12 +200,12 @@ namespace HonorsThesisApp
             // check if user added a new item name or brand name:
             if (!TB_NewBrandName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Brand")
             {
-                addBrandToDB();
+                  addBrandToDB();
             }
 
             if (!TB_NewItemName.Text.IsNullOrEmpty() || TB_NewBrandName.Text != "Enter New Item")
             {
-                addItemToDB();
+                  addItemToDB();
             }
 
 
@@ -251,18 +252,19 @@ namespace HonorsThesisApp
                     // for this example let's just show a message
                     MessageBox.Show("ERROR:" + ex.Message);
                 }
-            }
 
+            }
             // then clear all fields so user can enter a new item if they want:
             TB_Barcode.Clear();
             TB_NewBrandName.Text = "Enter New Brand";
             TB_NewItemName.Text = "Enter New Item";
             TB_Price.Clear();
         }
+    
 
 
         //create a new brand - WHAT DOES THIS DO, ISNT IT IN addBrandToDB_Click - RB: I think we can delete
-/*private void addNewBrandName()
+private void addNewBrandName()
 {
     // replace with correct connection string
     //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
@@ -298,10 +300,10 @@ namespace HonorsThesisApp
             MessageBox.Show("ERROR:" + ex.Message);
         }
     }
-}*/
+}
 
 //what does this do? - isnt this add new item to db?
-/*private void addNewItemName()
+private void addNewItemName()
 {
     // replace with correct connection string
     //     String connectionString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=Air; Trusted_Connection=True;";
@@ -340,7 +342,7 @@ namespace HonorsThesisApp
 }
 
 //gets all items
-private void LoadItem_CBData()
+/*private void LoadItem_CBData()
 {
     //  string query = "SELECT product_name FROM Products";
 
@@ -377,10 +379,10 @@ private void LoadItem_CBData()
         }
 
     }
-}
+} */
 
 //gets all categories
-private void LoadCategory_CBData()
+/*private void LoadCategory_CBData()
 {
     string query = "SELECT category_name FROM Categories";
 
@@ -411,14 +413,15 @@ private void LoadCategory_CBData()
         }
     }
 
-}
+} */
 
 //gets all brands
-private void brandSelector_SelectedIndexChanged(object sender, EventArgs e)
+/*private void brandSelector_SelectedIndexChanged(object sender, EventArgs e)
 {
     //   LoadBrand_CBData();
     LoadItem_CBData();
-}
+} */
+/*
 private void LoadBrand_CBData()
 {
     string query = "SELECT brand_name FROM Brand";
@@ -457,23 +460,8 @@ private void LoadBrand_CBData()
 
 
     }
-}
+} */
 
-
-//buttons to make fields to add new brand/item
-private void button_addNewBrand_Click(object sender, EventArgs e)
-{
-    TB_NewBrandName.Visible = true;
-    addBrandToDB.Visible = true;
-    button_addNewBrand.Visible = false;
-}
-
-private void button_addNewItemName_Click(object sender, EventArgs e)
-{
-    TB_NewItemName.Visible = true;
-    addItemToDB.Visible = true;
-    button_addNewItemName.Visible = false;  
-}
 
 
 
@@ -515,33 +503,33 @@ private void addBrandToDB_Click(object sender, EventArgs e)
         brandSelector.Items.Clear();
         LoadBrand_CBData();
         TB_NewBrandName.Visible = false;
-        addBrandToDB.Visible = false;
+    //    addBrandToDB.Visible = false;
         button_addNewBrand.Visible = true;
     }
 }
 
 
 //buttons to make fields to add new brand/item
-private void button_addNewBrand_Click(object sender, EventArgs e)
+/*private void button_addNewBrand_Click(object sender, EventArgs e)
 {
     TB_NewBrandName.Visible = true;
     addBrandToDB.Visible = true;
     button_addNewBrand.Visible = false;
-}
+} */
 
-private void button_addNewItemName_Click(object sender, EventArgs e)
+/*private void button_addNewItemName_Click(object sender, EventArgs e)
 {
     TB_NewItemName.Visible = true;
     addItemToDB.Visible = true;
     button_addNewItemName.Visible = false;  
-}
+} */
 
 
 
 
 
 // this actually adds a new brand
-private void addBrandToDB_Click(object sender, EventArgs e)
+/*private void addBrandToDB_Click(object sender, EventArgs e)
 {
     if (TB_NewBrandName != null)
     {
@@ -580,7 +568,7 @@ private void addBrandToDB_Click(object sender, EventArgs e)
         addBrandToDB.Visible = false;
         button_addNewBrand.Visible = true;
     }
-}
+} */
 //submit form
 private void button_Submit_Click(object sender, EventArgs e)
 {
@@ -589,52 +577,142 @@ private void button_Submit_Click(object sender, EventArgs e)
 
 }
 
-//this is for adding a product
-private void addItemToDB()
-{
-    if (categorySelector.SelectedItem == null || brandSelector.SelectedItem == null || TB_Barcode.Text.IsNullOrEmpty())
-    {
-        MessageBox.Show("Category, brand, and barcode must be entered before adding a new item.");
-        return;                
-    }
-    else if (TB_NewItemName == null)
-    {
-        MessageBox.Show("You must enter an item name before pressing add Item");
-        return;
-    }
-    else
-    {
-        int category = 0;
-        int brand = 0;
-        string getCategoryId = "SELECT category_id FROM Categories WHERE category_name = @catname";
-        string getBrandId = "SELECT brand_id FROM brand WHERE brand_name = @brandname";
-        String query = "INSERT INTO Products VALUES(@barcode, @item, @brand, @category)";
-        // Create the connection (and be sure to dispose it at the end)
-        using (SqlConnection cnn = new SqlConnection(connString))
+        // this actually adds a new brand
+        private void addBrandToDB()
         {
-            try
+            if (TB_NewBrandName != null)
             {
-                // Open the connection to the database. 
-                cnn.Open();                        
-                //get category & brand ID
-                using(SqlCommand cmd = new SqlCommand(getCategoryId, cnn))
-                {
-                                MessageBox.Show("Product inserted!");
 
-                        if (result != DBNull.Value)
+                String query = "INSERT INTO Brand VALUES(@brand)";
+
+                using (SqlConnection cnn = new SqlConnection(connString))
+                {
+                    try
+                    {
+
+                        // If we cannot reach the db then we have connectivity problems
+                        cnn.Open();
+
+                        // Prepare the command to be executed on the db
+                        using (SqlCommand cmd = new SqlCommand(query, cnn))
                         {
-                            category = Convert.ToInt32(result);
+                            // Create and set the parameters values 
+                            cmd.Parameters.AddWithValue("@brand", TB_NewBrandName.Text);
+                            int rowsAdded = cmd.ExecuteNonQuery();
+                            if (rowsAdded > 0)
+                                MessageBox.Show("Row inserted!!");
+                            else
+                                // Well this should never really n
+                                MessageBox.Show("No row inserted");
                         }
                     }
-                LoadItem_CBData();
-                TB_NewItemName.Visible = false;
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("ERROR:" + ex.Message);
+                    }
+                }
+                brandSelector.Items.Clear();
+                LoadBrand_CBData();
+                TB_NewBrandName.Visible = false;
+                //addBrandToDB.Visible = false;
+                //button_addNewBrand.Visible = true;
+            }
+        }
+
+        //this is for adding a product
+        private void addItemToDB()
+        {
+            if (categorySelector.SelectedItem == null || brandSelector.SelectedItem == null || TB_Barcode.Text.IsNullOrEmpty())
+            {
+                MessageBox.Show("Category, brand, and barcode must be entered before adding a new item.");
+                return;
+            }
+            else if (TB_NewItemName == null)
+            {
+                MessageBox.Show("You must enter an item name before pressing add Item");
+                return;
+            }
+            else
+            {
+                int category = 0;
+                int brand = 0;
+                string getCategoryId = "SELECT category_id FROM Categories WHERE category_name = @catname";
+                string getBrandId = "SELECT brand_id FROM brand WHERE brand_name = @brandname";
+                String query = "INSERT INTO Products VALUES(@barcode, @item, @brand, @category)";
+                // Create the connection (and be sure to dispose it at the end)
+                using (SqlConnection cnn = new SqlConnection(connString))
+                {
+                    try
+                    {
+                        // Open the connection to the database. 
+                        cnn.Open();
+                        //get category & brand ID
+                        //get category & brand ID
+                        using (SqlCommand cmd = new SqlCommand(getCategoryId, cnn))
+                        {
+                            cmd.Parameters.AddWithValue("@catname", categorySelector.SelectedItem);
+                            try
+                            {
+                                var result = cmd.ExecuteScalar();
+                                if (result != DBNull.Value)
+                                {
+                                    category = Convert.ToInt32(result);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Error: " + ex.Message);
+                            }
+                        }
+                        using (SqlCommand cmd = new SqlCommand(getBrandId, cnn))
+                        {
+                            cmd.Parameters.AddWithValue("@brandname", brandSelector.SelectedItem);
+                            try
+                            {
+                                var result = cmd.ExecuteScalar();
+                                if (result != DBNull.Value)
+                                {
+                                    brand = Convert.ToInt32(result);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Error: " + ex.Message);
+                            }
+                        }
+
+                        // add item to db
+                        using (SqlCommand cmd = new SqlCommand(query, cnn))
+                        {
+                            // Create and set the parameters values 
+                            cmd.Parameters.AddWithValue("@barcode", TB_Barcode.Text);
+                            cmd.Parameters.AddWithValue("@item", TB_NewItemName.Text);
+                            cmd.Parameters.AddWithValue("@category", category);
+                            cmd.Parameters.AddWithValue("@brand", brand);
+                            int rowsAdded = cmd.ExecuteNonQuery();
+                            if (rowsAdded > 0)
+                                MessageBox.Show("Row inserted!!");
+                            else
+                                //       // Well this should never really n
+                                MessageBox.Show("No row inserted");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("ERROR:" + ex.Message);
+                    }
+                }
+                TB_Item.Items.Clear();
+                LoadItem_CBData(); TB_NewItemName.Visible = false;
                 //addItemToDB.Visible = false;
                 //button_addNewItemName.Visible = true;
             }
         }
 
+
+
         //submit form
-        private void button_Submit_Click(object sender, EventArgs e)
+     /*   private void button_Submit_Click(object sender, EventArgs e)
         {
             // exit the screen
             MessageBox.Show("Are you sure you're done entering items for this shopping date and store?");
@@ -654,10 +732,10 @@ private void addItemToDB()
                     {
                         Console.WriteLine("Error: " + ex.Message);
                     }
-                }
+                } */
 
 //this is for adding an item to a store - NOT DONE
-private void button_AddItem_Click(object sender, EventArgs e)
+/*private void button_AddItem_Click(object sender, EventArgs e)
 {
     double price = Convert.ToDouble(TB_Price.Text);
     if (brandSelector.SelectedItem == null || TB_Price.Text == "")
@@ -712,6 +790,6 @@ private void button_AddItem_Click(object sender, EventArgs e)
         button_addNewItemName.Visible = true;
     }
 }
-
+*/
 }
 }
