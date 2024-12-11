@@ -1,6 +1,6 @@
 ﻿namespace HonorsThesisApp
 {
-    partial class Form1
+    partial class ReceiptForm1
     {
         /// <summary>
         ///  Required designer variable.

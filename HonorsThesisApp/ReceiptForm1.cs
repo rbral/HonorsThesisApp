@@ -8,7 +8,7 @@ using Microsoft.Data.SqlClient;
 
 namespace HonorsThesisApp
 {
-    public partial class Form1 : Form
+    public partial class ReceiptForm1 : Form
     {
         private static String strServer = ConfigurationManager.AppSettings["server"];
         private static String strDatabase = ConfigurationManager.AppSettings["database"];
@@ -17,7 +17,7 @@ namespace HonorsThesisApp
         private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
 
         //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
-        public Form1()
+        public ReceiptForm1()
         {
             InitializeComponent();
             dateTimePicker1.Value = DateTime.Now;
@@ -36,7 +36,7 @@ namespace HonorsThesisApp
 
             int storeID = 0; //replace with actual store id
 
-            Form2 newForm = new Form2(storeID); // Create an instance of the new form
+            ReceiptForm2 newForm = new ReceiptForm2(storeID); // Create an instance of the new form
             newForm.Show();              // Show the new form
             this.Hide();                 // Optionally hide the current form
         }

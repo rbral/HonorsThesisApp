@@ -1,6 +1,4 @@
-﻿// old version partially edited from chatgt
-
-using System;
+﻿using System;
 using System.Configuration;
 using System.Configuration.Provider;
 using System.Data;
@@ -14,7 +12,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace HonorsThesisApp
 {
-    public partial class Form2 : Form
+    public partial class ReceiptForm2 : Form
     {
         private static String strServer = ConfigurationManager.AppSettings["server"];
         private static String strDatabase = ConfigurationManager.AppSettings["database"];
@@ -24,7 +22,7 @@ namespace HonorsThesisApp
 
         private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
-        public Form2(int storeID)
+        public ReceiptForm2(int storeID)
         {
             InitializeComponent();
             LoadCategory_CBData();
@@ -261,7 +259,7 @@ namespace HonorsThesisApp
         }
 
 
-        //create a new brand - WHAT DOES THIS DO, ISNT IT IN addBrandToDB_Click - RB: I think we can delete
+        //create a new brand - WHAT DOES THIS DO, ISNT IT IN addBrandToDB_Click - RB: I think we can delete these 2
         /*private void addNewBrandName()
         {
             // replace with correct connection string
