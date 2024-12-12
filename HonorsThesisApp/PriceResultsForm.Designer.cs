@@ -1,6 +1,6 @@
 ﻿namespace HonorsThesisApp
 {
-    partial class ShoppingForm
+    partial class PriceResultsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,15 +30,15 @@
         {
             SuspendLayout();
             // 
-            // ShoppingForm
+            // PriceResultsForm
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
-            ClientSize = new Size(878, 1043);
-            Name = "ShoppingForm";
+            ClientSize = new Size(882, 1071);
+            Name = "PriceResultsForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ShoppingForm";
+            Text = "PriceResultsForm";
             ResumeLayout(false);
         }
 

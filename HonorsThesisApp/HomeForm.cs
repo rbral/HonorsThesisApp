@@ -19,15 +19,15 @@ namespace HonorsThesisApp
 
         private void button_ReceiptUpload_Click(object sender, EventArgs e)
         {
-            Form1 receiptForm1 = new Form1(); // Create an instance of the new form
-            receiptForm1.Show();              // Show the new form
+            Form1 form = new Form1(); // Create an instance of the new form
+            form.Show();              // Show the new form
             this.Hide();                 // Optionally hide the current form
         }
 
         private void button_ShoppingList_Click(object sender, EventArgs e)
         {
-            ShoppingForm shoppingForm = new ShoppingForm();
-            shoppingForm.Show();
+            ShoppingListForm form = new ShoppingListForm();
+            form.Show();
             this.Hide();
         }
     }
