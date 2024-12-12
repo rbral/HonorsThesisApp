@@ -1,19 +1,8 @@
-﻿// old version partially edited from chatgt
-
-using System;
-using System.Collections.Generic;
+﻿
 using System.Configuration;
-using System.Configuration.Provider;
-using System.Data;
-using System.Reflection.PortableExecutable;
-using System.Security.AccessControl;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
-using static System.ComponentModel.Design.ObjectSelectorEditor;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+
 
 namespace HonorsThesisApp
 {
