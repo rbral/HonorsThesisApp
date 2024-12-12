@@ -43,15 +43,19 @@
             TB_StoreName = new TextBox();
             label1 = new Label();
             button_Next = new Button();
+            L_SelectStore = new Label();
+            storeSelector = new ComboBox();
+            label6 = new Label();
             GB_StoreInfo.SuspendLayout();
             SuspendLayout();
             // 
             // dateTimePicker1
             // 
-            dateTimePicker1.Location = new Point(197, 109);
+            dateTimePicker1.Location = new Point(125, 98);
             dateTimePicker1.Margin = new Padding(2, 1, 2, 1);
+            dateTimePicker1.MinimumSize = new Size(4, 45);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(176, 23);
+            dateTimePicker1.Size = new Size(253, 45);
             dateTimePicker1.TabIndex = 2;
             dateTimePicker1.Value = new DateTime(2024, 11, 3, 19, 40, 6, 0);
             // 
@@ -59,26 +63,26 @@
             // 
             L_Receipt_Title.AutoSize = true;
             L_Receipt_Title.Font = new Font("Segoe UI", 16.125F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            L_Receipt_Title.Location = new Point(129, 42);
+            L_Receipt_Title.Location = new Point(130, 52);
             L_Receipt_Title.Margin = new Padding(2, 0, 2, 0);
             L_Receipt_Title.Name = "L_Receipt_Title";
             L_Receipt_Title.Size = new Size(160, 30);
             L_Receipt_Title.TabIndex = 3;
             L_Receipt_Title.Text = "Receipt Upload";
             L_Receipt_Title.TextAlign = ContentAlignment.MiddleCenter;
-            L_Receipt_Title.Click += L_Receipt_Title_Click;
             // 
             // L_Date
             // 
             L_Date.AutoSize = true;
             L_Date.BackColor = SystemColors.Control;
             L_Date.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            L_Date.Location = new Point(50, 106);
+            L_Date.Location = new Point(49, 98);
             L_Date.Margin = new Padding(2, 0, 2, 0);
+            L_Date.MinimumSize = new Size(65, 21);
             L_Date.Name = "L_Date";
-            L_Date.Size = new Size(130, 21);
+            L_Date.Size = new Size(65, 21);
             L_Date.TabIndex = 4;
-            L_Date.Text = "Date of purchase:";
+            L_Date.Text = "Date:";
             L_Date.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // GB_StoreInfo
@@ -95,11 +99,11 @@
             GB_StoreInfo.Controls.Add(TB_StoreName);
             GB_StoreInfo.Controls.Add(label1);
             GB_StoreInfo.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            GB_StoreInfo.Location = new Point(50, 159);
+            GB_StoreInfo.Location = new Point(49, 203);
             GB_StoreInfo.Margin = new Padding(2, 1, 2, 1);
             GB_StoreInfo.Name = "GB_StoreInfo";
             GB_StoreInfo.Padding = new Padding(2, 1, 2, 1);
-            GB_StoreInfo.Size = new Size(322, 266);
+            GB_StoreInfo.Size = new Size(322, 238);
             GB_StoreInfo.TabIndex = 5;
             GB_StoreInfo.TabStop = false;
             GB_StoreInfo.Text = "Store Info:";
@@ -210,12 +214,51 @@
             button_Next.UseVisualStyleBackColor = true;
             button_Next.Click += button_Next_Click;
             // 
+            // L_SelectStore
+            // 
+            L_SelectStore.AutoSize = true;
+            L_SelectStore.BackColor = SystemColors.Control;
+            L_SelectStore.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            L_SelectStore.Location = new Point(49, 147);
+            L_SelectStore.Margin = new Padding(2, 0, 2, 0);
+            L_SelectStore.MinimumSize = new Size(65, 21);
+            L_SelectStore.Name = "L_SelectStore";
+            L_SelectStore.Size = new Size(65, 21);
+            L_SelectStore.TabIndex = 7;
+            L_SelectStore.Text = "Store:";
+            L_SelectStore.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // storeSelector
+            // 
+            storeSelector.FormattingEnabled = true;
+            storeSelector.Location = new Point(125, 147);
+            storeSelector.Margin = new Padding(2, 1, 2, 1);
+            storeSelector.MaximumSize = new Size(253, 0);
+            storeSelector.MinimumSize = new Size(176, 0);
+            storeSelector.Name = "storeSelector";
+            storeSelector.Size = new Size(253, 23);
+            storeSelector.TabIndex = 10;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(49, 179);
+            label6.Margin = new Padding(2, 0, 2, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(142, 15);
+            label6.TabIndex = 10;
+            label6.Text = "Or enter new store below:";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
-            ClientSize = new Size(473, 512);
+            ClientSize = new Size(475, 502);
+            Controls.Add(label6);
+            Controls.Add(storeSelector);
+            Controls.Add(L_SelectStore);
             Controls.Add(button_Next);
             Controls.Add(GB_StoreInfo);
             Controls.Add(L_Date);
@@ -247,5 +290,8 @@
         private TextBox TB_Zip;
         private TextBox TB_State;
         private Button button_Next;
+        private Label L_SelectStore;
+        private ComboBox storeSelector;
+        private Label label6;
     }
 }
