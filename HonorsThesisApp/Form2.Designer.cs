@@ -229,6 +229,7 @@
             button_Submit.TabIndex = 13;
             button_Submit.Text = "Submit";
             button_Submit.UseVisualStyleBackColor = true;
+            button_Submit.Click += button_Submit_Click_1;
             // 
             // label2
             // 

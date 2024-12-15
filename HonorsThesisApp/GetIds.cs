@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Frozen;
+using System.Configuration;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -118,7 +119,7 @@ namespace HonorsThesisApp
         public void addStores(List<string> selectedStores)
         {
             List<string> emptyList = new List<string>();
-            Tuple<double, string> emptyTuple = new Tuple<double, string>(0, "");
+           
             for (int ix = 0; ix < selectedStores.Count; ix++)
             {
                 map.Add(selectedStores[ix], new ProductStoreInfo(0.0, emptyList));
@@ -148,13 +149,13 @@ namespace HonorsThesisApp
                         using (SqlCommand cmd = new SqlCommand(getStoreAndPrice, cnn))
                         {
                             cmd.Parameters.AddWithValue("@product_name", itemName);
-                            cmd.Parameters.AddWithValue("@store_names", string.Join(", ", stores));
-
+                            //   cmd.Parameters.AddWithValue("@store_names", string.Join(", ", stores));
+                            cmd.Parameters.AddWithValue("@store_names", stores);
                             try
                             {
                                 using (SqlDataReader reader = cmd.ExecuteReader())
                                 {
-                                    if (reader.Read())
+                                    while (reader.Read())
                                     {
                                         cheapestStore = reader["store_name"].ToString();
                                         cheapestPrice = Convert.ToDouble(reader["price"]);
@@ -179,11 +180,19 @@ namespace HonorsThesisApp
                 }
                 else
                 {
-                    ProductStoreInfo info = map.GetValueOrDefault(cheapestStore);
+                    // ProductStoreInfo info = map.GetValueOrDefault(cheapestStore);
+                    // info.totalPrice += cheapestPrice;
+                    // info.productNames.Add(itemName);
+                    ProductStoreInfo info = map[cheapestStore];
                     info.totalPrice += cheapestPrice;
                     info.productNames.Add(itemName);
-                }
+                    map[cheapestStore] = info;
 
+
+                    
+
+                }
+               
 
             }
         }
