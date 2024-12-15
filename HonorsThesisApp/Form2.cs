@@ -15,8 +15,8 @@ namespace HonorsThesisApp
         private int storeID;
         private DateTime date;
 
-        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
-        //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        //private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form2(int storeID, DateTime date)
         {
             InitializeComponent();
@@ -200,7 +200,7 @@ namespace HonorsThesisApp
                 brandSelector.Items.Clear();
                 LoadBrand_CBData();
                 TB_NewBrandName.Visible = false;
-             
+
             }
         }
 
@@ -223,8 +223,8 @@ namespace HonorsThesisApp
                 MessageBox.Show("Barcode must be entered before adding a new item.");
                 return;
             }
-            
-            
+
+
             int category = 0;
             int brand = 0;
             string getCategoryId = "SELECT category_id FROM Categories WHERE category_name = @catname";
@@ -301,11 +301,11 @@ namespace HonorsThesisApp
             TB_Item.Items.Clear();
             LoadItem_CBData();
             TB_NewItemName.Visible = false;
-                
-        }
-        
 
-        
+        }
+
+
+
 
         //this is for adding an item to a store
         private void button_AddItem_Click(object sender, EventArgs e)
@@ -324,7 +324,8 @@ namespace HonorsThesisApp
             try
             {
                 price = Convert.ToDouble(TB_Price.Text);
-            } catch
+            }
+            catch
             {
                 MessageBox.Show("Price must be a positive number");
                 return;
@@ -372,18 +373,24 @@ namespace HonorsThesisApp
             LoadItem_CBData();
             TB_NewBrandName.Visible = false;
             TB_NewItemName.Visible = false;
-            
+
         }
 
 
         //submit form
-         private void button_Submit_Click(object sender, EventArgs e)
+        private void button_Submit_Click(object sender, EventArgs e)
         {
             // exit the screen
             MessageBox.Show("Are you sure you're done entering items for this shopping date and store?");
 
         }
         #endregion
-  
+
+        private void button_Submit_Click_1(object sender, EventArgs e)
+        {
+            HomeForm form = new HomeForm();
+            form.Show();
+            this.Hide();
+        }
     }
 }

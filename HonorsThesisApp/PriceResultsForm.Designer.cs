@@ -28,14 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
+            button1 = new Button();
             SuspendLayout();
+            // 
+            // button1
+            // 
+            button1.Location = new Point(167, 313);
+            button1.Name = "button1";
+            button1.Size = new Size(120, 23);
+            button1.TabIndex = 0;
+            button1.Text = "Back To Home";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // PriceResultsForm
             // 
-            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
-            ClientSize = new Size(882, 1071);
+            ClientSize = new Size(475, 413);
+            Controls.Add(button1);
+            Margin = new Padding(2, 1, 2, 1);
             Name = "PriceResultsForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PriceResultsForm";
@@ -43,5 +56,7 @@
         }
 
         #endregion
+
+        private Button button1;
     }
 }
