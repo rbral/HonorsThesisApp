@@ -33,22 +33,23 @@
             // 
             // button1
             // 
-            button1.Location = new Point(167, 313);
+            button1.Location = new Point(20, 20);
+            button1.Margin = new Padding(6, 6, 6, 6);
             button1.Name = "button1";
-            button1.Size = new Size(120, 23);
+            button1.Size = new Size(150, 47);
             button1.TabIndex = 0;
-            button1.Text = "Back To Home";
+            button1.Text = "Home";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // PriceResultsForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
-            ClientSize = new Size(475, 413);
+            ClientSize = new Size(882, 881);
             Controls.Add(button1);
-            Margin = new Padding(2, 1, 2, 1);
+            Margin = new Padding(4, 2, 4, 2);
             Name = "PriceResultsForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PriceResultsForm";

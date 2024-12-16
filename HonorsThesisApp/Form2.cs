@@ -15,8 +15,8 @@ namespace HonorsThesisApp
         private int storeID;
         private DateTime date;
 
-        //private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
-        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         public Form2(int storeID, DateTime date)
         {
             InitializeComponent();
@@ -387,6 +387,13 @@ namespace HonorsThesisApp
         #endregion
 
         private void button_Submit_Click_1(object sender, EventArgs e)
+        {
+            HomeForm form = new HomeForm();
+            form.Show();
+            this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
         {
             HomeForm form = new HomeForm();
             form.Show();

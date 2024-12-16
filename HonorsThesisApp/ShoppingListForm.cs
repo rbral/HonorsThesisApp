@@ -20,8 +20,8 @@ namespace HonorsThesisApp
 
         }
 
-        //private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
-        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
         private List<String> items = new List<string>();
         private void LoadCheckedListProducts()
         {
@@ -53,7 +53,7 @@ namespace HonorsThesisApp
             }
         }
 
-        
+
 
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -64,14 +64,21 @@ namespace HonorsThesisApp
         private void button_Next_Click(object sender, EventArgs e)
         {
             List<String> products = new List<string>();
-                foreach (var item in checkedList_Products.CheckedItems)
-                {
-                    products.Add(item.ToString());
-                }
-           
-       
-      
+            foreach (var item in checkedList_Products.CheckedItems)
+            {
+                products.Add(item.ToString());
+            }
+
+
+
             StoreForm form = new StoreForm(products);
+            form.Show();
+            this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            HomeForm form = new HomeForm();
             form.Show();
             this.Hide();
         }
