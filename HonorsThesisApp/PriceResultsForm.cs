@@ -14,19 +14,15 @@ namespace HonorsThesisApp
     {
         private List<string> selectedStores;
 
-        //holds all the info for a a store: key string is the name of the store, ProductStoreInfo is a class taht has the total price and list of products.
+        //holds all the info for a a store: key string is the name of the store,
+        //ProductStoreInfo is a class taht has the total price and list of products.
         Dictionary<string, ProductStoreInfo> map;
         List<string> noProductsAvailable;
 
-
-        public PriceResultsForm(List<String> selectedStores)
-        {
-            InitializeComponent();
-            this.selectedStores = selectedStores;
-
-            runAndDisplay();
-
-        }
+        // Set the starting position for labels
+        int startX = 20; // X-coordinate
+        int startY = 100; // Y-coordinate
+        int spacing = 50; // Space between labels
 
         public PriceResultsForm(Dictionary<string, ProductStoreInfo> map, List<string>noProducts)
         {
@@ -34,88 +30,76 @@ namespace HonorsThesisApp
             this.map = map;
             noProductsAvailable = noProducts;
 
-            runAndDisplay();
-
-        }
-
-        private void runAndDisplay()
-        {
-            CalculatePrices();
-            //   DisplaySelectedStores();
+            // run the display logic: 
             DisplayStoreResults();
-            DisplayNoProductsAvailable();
-        }
-
-        private void DisplayNoProductsAvailable()
-        {
-            int startX = 200;
-            int startY = 20;
-            int spacing = 30;
-            Label noproducts = new Label
-            {
-                Text = "These Products are not available in any stores: \n " + noProductsAvailable.ToString(),
-                AutoSize = true,
-                Location = new Point(startX, startY + (3 * spacing)) // Adjust the Y-coordinate for each label
-            };
+            DisplayNoProductsAvailable();            
         }
 
         private void DisplayStoreResults()
         {
-            // Set the starting position for labels
-            int startX = 20; // X-coordinate
-            int startY = 20; // Y-coordinate
-            int spacing = 30; // Space between labels
-
             // Loop through the selected stores and create labels
             foreach (KeyValuePair<string, ProductStoreInfo> kvp in map)
             {
+                string storeName = kvp.Key;
+                ProductStoreInfo storeInfo = kvp.Value;
+
+                // create and display the store name label:
                 Label storeLabel = new Label
 
                 {
-                    Text = kvp.Key,
+                    Text = $"Store: {storeName} (Total Price: ${storeInfo.totalPrice:F2})",
                     AutoSize = true,
-                    Location = new Point(startX, startY + (2 * spacing)) // Adjust the Y-coordinate for each label
+                    Font = new Font("Arial", 12, FontStyle.Bold),
+                    Location = new Point(startX, startY) // Adjust the Y-coordinate for each label
                 };
-
-                Label resultsLabel = new Label
-                {
-                    Text = kvp.Value.productNames.ToString(),
-                    AutoSize=true,
-                    Location = new Point(startX, startY + (2 * spacing)) // Adjust the Y-coordinate for each label
-
-                };
-
-                // Add the label to the form
                 this.Controls.Add(storeLabel);
+
+                // display the list of products for the store:
+                int productY = startY + 30;
+                foreach (string product in storeInfo.productNames)
+                {
+                    Label productLabel = new Label
+                    {
+                        Text = $"- {product}",
+                        AutoSize = true,
+                        Font = new Font("Arial", 10, FontStyle.Regular),
+                        Location = new Point(startX + 20, productY)
+                    };
+                    this.Controls.Add(productLabel);
+                    productY += 30; // Space out product labels
+                }
+
+                // Adjust startY for the next store
+                startY = productY + spacing;
             }
         }
 
-        // calculations for which store has best prices can go here:
-        private void CalculatePrices()
+        private void DisplayNoProductsAvailable()
         {
 
-        }
-
-        // this GUI still needs to be adjusted with the correct layout
-        private void DisplaySelectedStores()
-        {
-            // Set the starting position for labels
-            int startX = 20; // X-coordinate
-            int startY = 20; // Y-coordinate
-            int spacing = 30; // Space between labels
-
-            // Loop through the selected stores and create labels
-            for (int i = 0; i < selectedStores.Count; i++)
+            // Title label for unavailable products
+            Label titleLabel = new Label
             {
-                Label storeLabel = new Label
-                {
-                    Text = selectedStores[i],
-                    AutoSize = true,
-                    Location = new Point(startX, startY + (i * spacing)) // Adjust the Y-coordinate for each label
-                };
+                Text = "Products Not Available in Any Store:",
+                AutoSize = true,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                Location = new Point(startX, startY)
+            };
+            this.Controls.Add(titleLabel);
 
-                // Add the label to the form
-                this.Controls.Add(storeLabel);
+            // Display each unavailable product
+            int productY = startY + 30;
+            foreach (string product in noProductsAvailable)
+            {
+                Label productLabel = new Label
+                {
+                    Text = $"- {product}",
+                    AutoSize = true,
+                    Font = new Font("Arial", 10, FontStyle.Regular),
+                    Location = new Point(startX + 20, productY)
+                };
+                this.Controls.Add(productLabel);
+                productY += spacing;
             }
         }
 

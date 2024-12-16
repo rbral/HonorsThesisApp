@@ -14,7 +14,7 @@ namespace HonorsThesisApp
 {
     public partial class StoreForm : Form
     {
-        List<String> selectedProducts = new List<string> ();
+        List<String> selectedProducts = new List<string>();
         public StoreForm(List<String> products)
         {
             InitializeComponent();
@@ -22,8 +22,8 @@ namespace HonorsThesisApp
             selectedProducts = products;
         }
 
-        //private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
-        private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        private String connString = "Data Source=RIVKALAPTOP\\SQLEXPRESS01;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
+        //private String connString = "Data Source=labB119ZD\\SQLEXPRESS;Initial Catalog=ShopAI;Integrated Security=True;TrustServerCertificate=True;";
 
         //holds all the info for a a store: key string is the name of the store, ProductStoreInfo is a class taht has the total price and list of products.
         Dictionary<string, ProductStoreInfo> map = new Dictionary<string, ProductStoreInfo>();
@@ -45,7 +45,7 @@ namespace HonorsThesisApp
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
-                            { 
+                            {
                                 CheckedList_Stores.Items.Add(reader[0].ToString());
 
                             }
@@ -69,7 +69,7 @@ namespace HonorsThesisApp
         {
             // Collect selected store names into a list
             List<string> selectedStores = new List<string>();
-           
+
             foreach (var item in CheckedList_Stores.CheckedItems)
             {
                 selectedStores.Add(item.ToString());
@@ -99,8 +99,8 @@ namespace HonorsThesisApp
                 string cheapestStore = "";
                 double cheapestPrice = 0;
                 string itemName = items[itemIX];
-             //   string getStoreAndPrice = "SELECT TOP 1 store_name, sp.price FROM Store_products sp JOIN Stores s ON s.store_id = sp.store_id JOIN Products p ON sp.product_id = p.product_id " +
-            //        "WHERE product_name = @product_name AND store_name IN(@store_names) ORDER BY price ASC";
+                //   string getStoreAndPrice = "SELECT TOP 1 store_name, sp.price FROM Store_products sp JOIN Stores s ON s.store_id = sp.store_id JOIN Products p ON sp.product_id = p.product_id " +
+                //        "WHERE product_name = @product_name AND store_name IN(@store_names) ORDER BY price ASC";
                 string getStoreAndPrice = "SELECT TOP 1 store_name, sp.price FROM Store_products sp JOIN Stores s ON s.store_id = sp.store_id JOIN Products p ON sp.product_id = p.product_id " +
                     "WHERE product_name = @product_name AND store_name IN({0}) ORDER BY price ASC";
                 using (SqlConnection cnn = new SqlConnection(connString))
@@ -111,7 +111,7 @@ namespace HonorsThesisApp
                         cnn.Open();
 
                         using (SqlCommand cmd = new SqlCommand(getStoreAndPrice, cnn))
-                        {                                    
+                        {
                             cmd.Parameters.AddWithValue("@product_name", itemName);
                             var storeParameterList = new List<string>();
                             foreach (String store in stores)
@@ -151,10 +151,10 @@ namespace HonorsThesisApp
                 }
                 else
                 {
-                      ProductStoreInfo info = map.GetValueOrDefault(cheapestStore);
-                      info.totalPrice += cheapestPrice;
-                      info.productNames.Add(itemName);
-     
+                    ProductStoreInfo info = map.GetValueOrDefault(cheapestStore);
+                    info.totalPrice += cheapestPrice;
+                    info.productNames.Add(itemName);
+
 
                 }
 
@@ -162,5 +162,11 @@ namespace HonorsThesisApp
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            HomeForm form = new HomeForm();
+            form.Show();
+            this.Hide();
+        }
     }
 }

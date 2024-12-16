@@ -31,6 +31,7 @@
             L_StoreChoice = new Label();
             checkedList_Products = new CheckedListBox();
             button_Next = new Button();
+            button1 = new Button();
             SuspendLayout();
             // 
             // L_StoreChoice
@@ -38,11 +39,11 @@
             L_StoreChoice.AutoSize = true;
             L_StoreChoice.BackColor = SystemColors.Control;
             L_StoreChoice.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            L_StoreChoice.Location = new Point(17, 24);
-            L_StoreChoice.Margin = new Padding(2, 0, 2, 0);
-            L_StoreChoice.MinimumSize = new Size(65, 21);
+            L_StoreChoice.Location = new Point(37, 102);
+            L_StoreChoice.Margin = new Padding(4, 0, 4, 0);
+            L_StoreChoice.MinimumSize = new Size(121, 45);
             L_StoreChoice.Name = "L_StoreChoice";
-            L_StoreChoice.Size = new Size(272, 21);
+            L_StoreChoice.Size = new Size(561, 45);
             L_StoreChoice.TabIndex = 9;
             L_StoreChoice.Text = "Select all items you'd like to purchase:";
             L_StoreChoice.TextAlign = ContentAlignment.MiddleLeft;
@@ -51,34 +52,46 @@
             // 
             checkedList_Products.CheckOnClick = true;
             checkedList_Products.FormattingEnabled = true;
-            checkedList_Products.Location = new Point(20, 59);
-            checkedList_Products.Margin = new Padding(2, 1, 2, 1);
+            checkedList_Products.Location = new Point(37, 190);
+            checkedList_Products.Margin = new Padding(4, 2, 4, 2);
             checkedList_Products.Name = "checkedList_Products";
-            checkedList_Products.Size = new Size(435, 292);
+            checkedList_Products.Size = new Size(804, 616);
             checkedList_Products.TabIndex = 10;
             checkedList_Products.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged;
             // 
             // button_Next
             // 
-            button_Next.Location = new Point(20, 442);
-            button_Next.Margin = new Padding(2, 1, 2, 1);
+            button_Next.Location = new Point(37, 943);
+            button_Next.Margin = new Padding(4, 2, 4, 2);
             button_Next.Name = "button_Next";
-            button_Next.Size = new Size(81, 22);
+            button_Next.Size = new Size(150, 47);
             button_Next.TabIndex = 11;
             button_Next.Text = "Next";
             button_Next.UseVisualStyleBackColor = true;
             button_Next.Click += button_Next_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(20, 20);
+            button1.Margin = new Padding(6);
+            button1.Name = "button1";
+            button1.Size = new Size(150, 47);
+            button1.TabIndex = 12;
+            button1.Text = "Home";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // ShoppingListForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
-            ClientSize = new Size(523, 488);
+            ClientSize = new Size(971, 1041);
+            Controls.Add(button1);
             Controls.Add(button_Next);
             Controls.Add(checkedList_Products);
             Controls.Add(L_StoreChoice);
-            Margin = new Padding(2, 1, 2, 1);
+            Margin = new Padding(4, 2, 4, 2);
             Name = "ShoppingListForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ShoppingListForm";
@@ -91,5 +104,6 @@
         private Label L_StoreChoice;
         private CheckedListBox checkedList_Products;
         private Button button_Next;
+        private Button button1;
     }
 }

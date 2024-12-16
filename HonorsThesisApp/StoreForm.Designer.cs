@@ -32,6 +32,7 @@
             groupBox_StoreChoice = new GroupBox();
             CheckedList_Stores = new CheckedListBox();
             button_CalculatePrices = new Button();
+            button1 = new Button();
             groupBox_StoreChoice.SuspendLayout();
             SuspendLayout();
             // 
@@ -40,7 +41,7 @@
             L_StoreChoice.AutoSize = true;
             L_StoreChoice.BackColor = SystemColors.Control;
             L_StoreChoice.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            L_StoreChoice.Location = new Point(51, 61);
+            L_StoreChoice.Location = new Point(50, 105);
             L_StoreChoice.Margin = new Padding(4, 0, 4, 0);
             L_StoreChoice.MinimumSize = new Size(121, 45);
             L_StoreChoice.Name = "L_StoreChoice";
@@ -52,7 +53,7 @@
             // groupBox_StoreChoice
             // 
             groupBox_StoreChoice.Controls.Add(CheckedList_Stores);
-            groupBox_StoreChoice.Location = new Point(50, 136);
+            groupBox_StoreChoice.Location = new Point(50, 187);
             groupBox_StoreChoice.Name = "groupBox_StoreChoice";
             groupBox_StoreChoice.Size = new Size(587, 400);
             groupBox_StoreChoice.TabIndex = 9;
@@ -78,7 +79,18 @@
             button_CalculatePrices.TabIndex = 12;
             button_CalculatePrices.Text = "Find Cheap Prices!";
             button_CalculatePrices.UseVisualStyleBackColor = true;
-            button_CalculatePrices.Click += this.button_CalculatePrices_Click;
+            button_CalculatePrices.Click += button_CalculatePrices_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(20, 20);
+            button1.Margin = new Padding(6);
+            button1.Name = "button1";
+            button1.Size = new Size(150, 47);
+            button1.TabIndex = 13;
+            button1.Text = "Home";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // StoreForm
             // 
@@ -86,6 +98,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SkyBlue;
             ClientSize = new Size(878, 1043);
+            Controls.Add(button1);
             Controls.Add(button_CalculatePrices);
             Controls.Add(groupBox_StoreChoice);
             Controls.Add(L_StoreChoice);
@@ -103,5 +116,6 @@
         private GroupBox groupBox_StoreChoice;
         private CheckedListBox CheckedList_Stores;
         private Button button_CalculatePrices;
+        private Button button1;
     }
 }
